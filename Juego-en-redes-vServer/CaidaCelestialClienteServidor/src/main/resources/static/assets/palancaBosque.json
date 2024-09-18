@@ -1,0 +1,115 @@
+{
+	"frames": {
+		"1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 446,
+				"h": 345
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 446,
+				"h": 345
+			},
+			"sourceSize": {
+				"w": 446,
+				"h": 345
+			}
+		},
+		"2.png": {
+			"frame": {
+				"x": 449,
+				"y": 1,
+				"w": 446,
+				"h": 345
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 446,
+				"h": 345
+			},
+			"sourceSize": {
+				"w": 446,
+				"h": 345
+			}
+		},
+		"3.png": {
+			"frame": {
+				"x": 897,
+				"y": 1,
+				"w": 446,
+				"h": 345
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 446,
+				"h": 345
+			},
+			"sourceSize": {
+				"w": 446,
+				"h": 345
+			}
+		},
+		"4.png": {
+			"frame": {
+				"x": 1345,
+				"y": 1,
+				"w": 446,
+				"h": 345
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 446,
+				"h": 345
+			},
+			"sourceSize": {
+				"w": 446,
+				"h": 345
+			}
+		},
+		"5.png": {
+			"frame": {
+				"x": 1793,
+				"y": 1,
+				"w": 446,
+				"h": 345
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 446,
+				"h": 345
+			},
+			"sourceSize": {
+				"w": 446,
+				"h": 345
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "palancaBosque.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 2240,
+			"h": 347
+		},
+		"scale": "1"
+	}
+}

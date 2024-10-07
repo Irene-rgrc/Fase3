@@ -112,8 +112,9 @@ public class UsersController {
     @PostMapping("/chat")
     @ResponseStatus(HttpStatus.CREATED)
     public Message enviarMensaje(@RequestBody Message mensaje) throws IOException {
-        if (mensaje.getUserId() != -1) {
-            mensaje.setUsername(users.get(mensaje.getUserId()).getUsername());
+        User user = users.get(mensaje.getUserId());
+        if (user != null) {
+            mensaje.setUsername(user.getUsername());
         } else {
             mensaje.setUsername("Anonimo");
         }

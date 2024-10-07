@@ -12,6 +12,8 @@
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
+			background-color: rgb(254, 216, 203);
+			background-image: url('ImagenesTutorial/Imagen1.png');
 		}
 
 		.register-popup {
@@ -1008,13 +1010,45 @@
 					let textoInput = mensaje.value.trim();
 
 					if (textoInput) {
+						// Obtener el usuario actual o "Anonimo"
+						let sender = currentUser ? currentUser : "Anonimo";
+						// Mostrar el mensaje en el chat
+						let ventanaChat = document.getElementById('ventanaChat');
+						ventanaChat.innerHTML += `<p><strong>${sender}:</strong> ${textoInput}</p>`;
+
+						// Enviar el mensaje al servidor
 						$.ajax({
 							url: 'http://' + ip + '/enviar-mensaje',
 							method: 'POST',
 							data: JSON.stringify({message: textoInput, sender: currentUser ? currentUser : "Anonimo"}) // Si no hay usuario se leoa con anonimo
 						});
+						// Limpiar el input de mensaje
+						mensaje.value = '';
 					}
 				}
+
+				// Función para obtener los mensajes del servidor
+				function getMensajesChat() {
+					$.ajax({
+						url: 'http://' + ip + '/obtener-mensajes',
+						method: 'GET',
+						success: function (data) {
+							// 'data' debe ser un array de mensajes [{sender: 'Usuario', message: 'Texto'}, ...]
+							let ventanaChat = document.getElementById('ventanaChat');
+							ventanaChat.innerHTML = ''; // Limpiar el contenido actual
+
+							// Recorrer los mensajes y mostrarlos en el chat
+							data.forEach(function (msg) {
+								ventanaChat.innerHTML += `<p><strong>${msg.sender ? msg.sender : "Anonimo"}:</strong> ${msg.message}</p>`;
+							});
+
+							// Hacer scroll hacia abajo para ver los últimos mensajes
+							ventanaChat.scrollTop = ventanaChat.scrollHeight;
+						}
+					});
+				}
+				// Llamar periódicamente a la función getMensajesChat cada 3 segundos para actualizar el chat
+				setInterval(getMensajesChat, 3000);
 
 				// Deshabilitar movimiento de Cassidie cuando se está escribiendo en el chat
 				function disableMovement() {

@@ -66,6 +66,7 @@ public class UsersController {
     @DeleteMapping("/{id}")
     public ResponseEntity<User> eliminarUser(@PathVariable long id) throws IOException {
         User savedUser = users.get(id);
+        
         if (savedUser != null) {
             users.remove(id);
             guardarUsuarios();
@@ -119,7 +120,7 @@ public class UsersController {
             mensaje.setUsername("Anonimo");
         }
         chatMessages.add(mensaje); // Agregar el mensaje a la lista de chat
-        System.out.println(mensaje.getUsername() + ": " + mensaje.getMessage());
+        System.out.println(mensaje.getUserId() + ": " + mensaje.getMessage());
         return mensaje;
     }
 

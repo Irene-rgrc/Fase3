@@ -3,15 +3,15 @@ package com.caidacelestial.entity;
 import java.io.Serializable;
 
 public class Message implements Serializable {
-	private int userId;
+	private long userId;
 	private String username;
 	private String message;
 	
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 	
-	public void setUserId(int userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 	

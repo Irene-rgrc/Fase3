@@ -1016,7 +1016,7 @@ function mensajeChat(message) {
             $('#mensaje').val(''); // Limpia el campo del mensaje tras el envío
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Error al enviar el mensaje:', textStatus, errorThrown);
+            console.error('Error al enviar el mensaje:', textStatus, errorThrown, currentUser);
         }
     });
 }
@@ -1047,7 +1047,7 @@ function getMensajesChat() {
 
             if (Array.isArray(data)) {
                 data.forEach(function(msg) {
-                    ventanaChat.innerHTML += `<p><strong>${msg.sender ? msg.sender : "Anonimo"}:</strong> ${msg.message}</p>`;
+                    ventanaChat.innerHTML += `<p><strong>${msg.username}:</strong> ${msg.message}</p>`;
                 });
             } else {
                 console.error('La respuesta no es un array:', data);

@@ -460,7 +460,6 @@
     		padding: 10px;
 		}
 		#mensajeEnviar{
-			
 			width: 20%;
     		padding: 10px;
 		}
@@ -582,7 +581,7 @@
 		<!-- EL CHAT WORKING PROGRESS::::::: -->
 		<div id="chat">
 			<div id="ventanaChat"></div>
-			<input type="text" id='mensaje' placeholder="Escribe tu mensaje aquí..." required>
+			<input type="text" id='mensaje' placeholder="Escribe tu mensaje aquí..." onfocus="disableMovement()" onblur="enableMovement()" /> <!-- / QUITAR O NO -->
 			<button id="mensajeEnviar" onclick="mensajeChat()">Enviar</button>
 		</div>
 		
@@ -721,7 +720,8 @@
 
 
 			var ip = location.host;
-			var currentUser;
+			//var currentUser;
+			var currentUser = "Anonimo";
 			
 			
 			function createUser(user, callback) {
@@ -966,6 +966,29 @@
 					partidaCompleta(tiempoTranscurrido);
 						return  tiempoTranscurrido;
 				}
+				
+				// Comprobación del Chat
+				let chatActive = false; // Flag que indica si esta activado o no el chat.
+				
+				// función para enviar mensajes AJAX
+				$('$mensajeEnviar').click(function (){
+					
+				});
+				
+				// Deshabilitar movimiento de Cassidie cuando se está escribiendo en el chat
+				function disableMovement(){
+					chatActive = true;
+				}
+				// Habilitar movimiento de Cassidie cuando se sale del chat
+				function enableMovement(){
+					chatActive = false;
+				}
+				
+				
+				
+				
+				
+				// ----   NIVELES ----
 
 				class NivelBase extends Phaser.Scene {
 
@@ -1121,9 +1144,10 @@
 					}
 
 					movimientoPersonajes() {
-						if (this.gameOver) {
+						if (this.gameOver || chatActive) { // ************************************************************
 							return;
 						}
+						
 
 						if (this.cursors.left.isDown) {
 							this.Seraphina.setVelocityX(-160);

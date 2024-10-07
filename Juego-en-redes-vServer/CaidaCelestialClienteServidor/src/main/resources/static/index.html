@@ -24,11 +24,12 @@
 			position: fixed;
 			margin-top: -43px;
 		}
-		
+
 		.principalReg-popup {
 			position: fixed;
 			margin-top: -43px;
 		}
+
 		.principalBorr-popup {
 			position: fixed;
 			margin-top: -43px;
@@ -58,7 +59,7 @@
 			margin-top: -35px;
 
 		}
-		
+
 		.despuesInicioMod-popup {
 			display: none;
 			position: fixed;
@@ -211,7 +212,7 @@
 			position: absolute;
 			left: 770px;
 		}
-		
+
 		.principalReg-container .inicioSesion {
 
 			background-image: url('assetsUsuarios/IniciarSesionBoton.PNG');
@@ -255,7 +256,7 @@
 			position: absolute;
 			left: 770px;
 		}
-		
+
 		.principalBorr-container .inicioSesion {
 
 			background-image: url('assetsUsuarios/IniciarSesionBoton.PNG');
@@ -299,7 +300,7 @@
 			position: absolute;
 			left: 770px;
 		}
-		
+
 		.despuesInicio-container .continuar {
 
 			background-image: url('assetsUsuarios/ContinuarBoton.png');
@@ -327,7 +328,7 @@
 			margin: 0 auto;
 			background-color: transparent;
 		}
-		
+
 		.despuesInicioMod-container .continuar {
 
 			background-image: url('assetsUsuarios/ContinuarBoton.png');
@@ -398,7 +399,7 @@
 			margin: 0 auto;
 			background-color: transparent;
 		}
-		
+
 
 		.iniciar-container .inicioSesion {
 
@@ -435,45 +436,75 @@
 		html {
 			font-size: xx-large;
 		}
-		
-		#chat{
-			position: absolute;
-    		bottom: 0;
-    		right: 0;
-    		width: 300px;
-    		height: 200px;
-    		border: 1px solid black;
-    		background-color: #f1f1f1;
-    		display: flex;
-    		flex-direction: column;
-    		justify-content: space-between;
-    		z-index: 1000;	
+
+		#chat {
+			position: fixed;
+			bottom: 10px;
+			left: 10px;
+			width: 300px;
+			height: 400px;
+			background-color: rgba(0, 0, 0, 0.7);
+			color: white;
+			padding: 10px;
+			border-radius: 10px;
+			z-index: 1000;
+			display: flex;
+			flex-direction: column;
 		}
-		#ventanaChat{
-			flex-grow: 1;
-    		overflow-y: auto;
-   			padding: 10px;
-    		background-color: white;
+
+		#ventanaChat {
+			flex: 1;
+			overflow-y: auto;
+			border: 1px solid #fff;
+			padding: 5px;
+			margin-bottom: 10px;
 		}
-		#mensaje{
-			width: 80%;
-    		padding: 10px;
+
+		#mensajeContainer {
+			display: flex;
+			margin-top: 10px;
 		}
-		#mensajeEnviar{
-			width: 20%;
-    		padding: 10px;
+
+		#mensaje {
+			flex: 0 0 10%;
+			padding: 2px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			height: 30px;
+		}
+
+		#mensajeEnviar {
+			width: 70%;
+			padding: 7px;
+			margin-left: 30px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			cursor: pointer;
+			border-radius: 5px;
+			transition: background-color 0.3s;
+		}
+
+		#mensajeEnviar:hover {
+			background-color: rgb(255, 128, 192);
+		}
+
+		canvas {
+			z-index: 1;
 		}
 	</style>
 </head>
 
 <body>
-	
-	<div id="errorReg" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255,0,0,0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000;">
-    Este usuario ya existe
+
+	<div id="errorReg"
+		style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255,0,0,0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000;">
+		Este usuario ya existe
 	</div>
-	
-	<div id="errorInicio" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255,0,0,0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000;">
-    Datos de Inicio de sesión incorrectos
+
+	<div id="errorInicio"
+		style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255,0,0,0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000;">
+		Datos de Inicio de sesión incorrectos
 	</div>
 	<p id="tiempo" style="position: absolute; top: 10px; left: 10px; padding: 10px; background-color: LavenderBlush;">
 	</p>
@@ -485,39 +516,39 @@
 			<br><br>
 			<button type="button" class="btn registrarse" onclick="openForm()"> </button>
 			<br><br>
-			<button type="button" class="btn offline" onclick="closePrincipal()"> </button>	
+			<button type="button" class="btn offline" onclick="closePrincipal()"> </button>
 		</form>
 
 	</div>
 
 	<body>
-		
+
 		<div class="principalReg-popup" id="principalRegForm">
-		<form class="principalReg-container">
-			<h1>Se ha registrado correctamente, inicie sesión con su cuenta</h1>
-			<br>
-			<button type="button" class="btn inicioSesion" onclick="openInicio()"> </button>
-			<br><br>
-			<button type="button" class="btn registrarse" onclick="openForm()"> </button>
-			<br><br>
-			<button type="button" class="btn offline" onclick="closePrincipalReg()"> </button>	
-		</form>
+			<form class="principalReg-container">
+				<h1>Se ha registrado correctamente, inicie sesión con su cuenta</h1>
+				<br>
+				<button type="button" class="btn inicioSesion" onclick="openInicio()"> </button>
+				<br><br>
+				<button type="button" class="btn registrarse" onclick="openForm()"> </button>
+				<br><br>
+				<button type="button" class="btn offline" onclick="closePrincipalReg()"> </button>
+			</form>
 
-	</div>
-	
-	<div class="principalBorr-popup" id="principalBorrForm">
-		<form class="principalBorr-container">
-			<h1>Su cuenta ha sido eliminada correctamente</h1>
-			<br>
-			<button type="button" class="btn inicioSesion" onclick="openInicio()"> </button>
-			<br><br>
-			<button type="button" class="btn registrarse" onclick="openForm()"> </button>
-			<br><br>
-			<button type="button" class="btn offline" onclick="closePrincipalBorr()"> </button>	
-		</form>
+		</div>
 
-	</div>
-		
+		<div class="principalBorr-popup" id="principalBorrForm">
+			<form class="principalBorr-container">
+				<h1>Su cuenta ha sido eliminada correctamente</h1>
+				<br>
+				<button type="button" class="btn inicioSesion" onclick="openInicio()"> </button>
+				<br><br>
+				<button type="button" class="btn registrarse" onclick="openForm()"> </button>
+				<br><br>
+				<button type="button" class="btn offline" onclick="closePrincipalBorr()"> </button>
+			</form>
+
+		</div>
+
 		<div class="despuesInicio-popup" id="despuesInicioForm">
 			<form class="despuesInicio-container">
 				<h1>Se ha iniciado sesión correctamente</h1>
@@ -529,7 +560,7 @@
 			</form>
 
 		</div>
-		
+
 		<div class="despuesInicioMod-popup" id="despuesInicioModForm">
 			<form class="despuesInicioMod-container">
 				<h1>Se ha modificado la contraseña</h1>
@@ -577,14 +608,15 @@
 				<button type="button" class="btn cancelar" onclick="closeInicio()"> </button>
 			</form>
 		</div>
-		
+
 		<!-- EL CHAT WORKING PROGRESS::::::: -->
 		<div id="chat">
 			<div id="ventanaChat"></div>
-			<input type="text" id='mensaje' placeholder="Escribe tu mensaje aquí..." onfocus="disableMovement()" onblur="enableMovement()"> <!-- / QUITAR O NO -->
-			<button type="button" id="mensajeEnviar" onclick="mensajeChat()"></button>
+			<input type="text" id='mensaje' placeholder="Escribe tu mensaje aquí..." onfocus="disableMovement()"
+				onblur="enableMovement()"> <!-- / QUITAR O NO -->
+			<button type="button" id="mensajeEnviar" onclick="mensajeChat()">Enviar</button>
 		</div>
-		
+
 		<!-- JUEGO CODIGO -->
 		<div class="otros-popup" id="otrosForm">
 			<form class="otros-container">
@@ -619,7 +651,7 @@
 					closePrincipalBorr();
 					document.getElementById("despuesInicioForm").style.display = "block";
 				}
-				
+
 				function openDespuesInicioMod() {
 					closePrincipal();
 					closePrincipalReg();
@@ -644,7 +676,7 @@
 					closeDespuesInicioMod();
 					document.getElementById("otrosForm").style.display = "block";
 				}
-				
+
 				function openPuntuacion() {
 					closePrincipal();
 					closePrincipalReg();
@@ -655,11 +687,11 @@
 				function openPrincipal() {
 					document.getElementById("principalForm").style.display = "block";
 				}
-				
+
 				function openPrincipalReg() {
 					document.getElementById("principalRegForm").style.display = "block";
 				}
-				
+
 				function openPrincipalBorr() {
 					document.getElementById("principalBorrForm").style.display = "block";
 				}
@@ -669,7 +701,7 @@
 				function closeForm() {
 					document.getElementById("myForm").style.display = "none";
 					openPrincipalReg();
-					
+
 				}
 
 				function closeDespuesInicio() {
@@ -695,7 +727,7 @@
 					document.getElementById("otrosForm").style.display = "none";
 					openPrincipalBorr();
 				}
-				
+
 				function closePuntuacion() {
 					document.getElementById("puntuacionForm").style.display = "none";
 					openPrincipal();
@@ -704,208 +736,208 @@
 				function closePrincipal() {
 					document.getElementById("principalForm").style.display = "none";
 				}
-				
+
 				function closePrincipalReg() {
 					document.getElementById("principalRegForm").style.display = "none";
 				}
-				
+
 				function closePrincipalBorr() {
 					document.getElementById("principalBorrForm").style.display = "none";
 				}
-				
+
 				function closeOtro2() {
-                    document.getElementById("otrosForm").style.display = "none";
-                    openDespuesInicio();
-                }
+					document.getElementById("otrosForm").style.display = "none";
+					openDespuesInicio();
+				}
 
 
-			var ip = location.host;
-			//var currentUser;
-			var currentUser = "Anonimo";
-			
-			
-			function createUser(user, callback) {
-			    $.ajax({
-			        method: "POST",
-			        url: 'http://' + ip + '/users/',
-			        data: JSON.stringify(user),
-			        processData: false,
-			        headers: {
-			            "Content-Type": "application/json"
-			        }
-			    }).done(function (createdUser) {
-			        console.log("User created: " + JSON.stringify(createdUser));
-			        callback(createdUser);
-			    }).fail(function (jqXHR, textStatus, errorThrown) {
-			        console.error('Error creating user:', textStatus, errorThrown);
-			    });
-			}
-			
-			function getUserByUsername(username, callback) {
-			    $.ajax({
-			        method: "GET",
-			        url: 'http://' + ip + '/users/search',
-			        data: { username: username }
-			    }).done(function (user) {
-			        callback(user);
-			    }).fail(function (jqXHR, textStatus) {
-			        callback(null);
-			    });
-			}
-			
-			function getRecordByUsername(record, callback) {
-			    $.ajax({
-			        method: "GET",
-			        url: 'http://' + ip + '/users/searchByRecord',
-			        data: { record: record }
-			    }).done(function (user) {
-			        callback(user);
-			    }).fail(function (jqXHR, textStatus) {
-			        callback(null);
-			    });
-			}
-			
-			$('#registrarse-button').click(function () {
-			    var name = $('#user').val();
-			    var password = $('#password').val();
-			
-			    var usuario = {
-			        username: name,
-			        password: password
-			    };
-			
-			    getUserByUsername(name, function (existingUser) {
-			        if (!existingUser) {
-			            createUser(usuario, function (usuarioConId) {
-			                currentUser = usuarioConId.id;
-			                openPrincipalReg();
-			                closeForm();
-			            });
-			        } else {
-			            console.log("Este usuario ya existe");
-			            document.getElementById("errorReg").style.display = "block";
-			            setTimeout(function () {
-			                document.getElementById("errorReg").style.display = "none";
-			            }, 3000);
-			        }
-			    });
-			});
-			
-			$(document).ready(function () {
-			    closePrincipalReg();
-			    closePrincipalBorr();
-			    openPrincipal();
-			});
-			function logUser(userId) {
-			    $.ajax({
-			        method: "GET",
-			        url: 'http://' + ip + '/users/' + userId,
-			    }).done(function (user) {
-			        console.log("User logged: " + JSON.stringify(user));
-			    }).fail(function (jqXHR, textStatus, errorThrown) {
-			        console.error('Error logging user:', textStatus, errorThrown);
-			    });
-			}
-			
-			$('#iniciar-button').click(function () {
-			    var name = $('#userA').val();
-			    var contraseña = $('#passwordA').val();
-			
-			    getUserByUsername(name, function (existingUser) {
-			        if (existingUser && existingUser.password === contraseña) {
-			            currentUser = existingUser.id;
-			            logUser(currentUser);
-			            openDespuesInicio();
-			            closeInicio();
-			            closePrincipal();
-			        } else {
-			            console.log("Usuario Incorrecto")
-			            document.getElementById("errorInicio").style.display = "block";
-			            setTimeout(function() {
-			                document.getElementById("errorInicio").style.display = "none";
-			            }, 3000);
-			        }
-			    });
-			});
-			
-			function updateUser(user) {
-			    $.ajax({
-			        method: 'PUT',
-			        url: 'http://' + ip + '/users/' + user.id,
-			        data: JSON.stringify(user),
-			        processData: false,
-			        headers: {
-			            "Content-Type": "application/json"
-			        }
-			    }).done(function (user) {
-			        console.log("Updated item: " + JSON.stringify(user));
-			    }).fail(function (jqXHR, textStatus, errorThrown) {
-			        console.error('Error updating user:', textStatus, errorThrown);
-			    });
-			}
-			
-			$('#cambiar-button').click(function () {
-			    var contraseña = $('#nPasswordC').val();
-			
-			    getUserByUsername($('#userA').val(), function (user) {
-			        if (user) {
-			            var usuario = {
-			                username: user.username,
-			                password: contraseña,
-			                id: user.id,
-			                record: user.record
-			            }
-			    console.log(usuario.id);
-			    updateUser(usuario);
-			    openDespuesInicioMod();
-			    closeOtro();
-			} else {
-			            console.log('User not found');
-			        }
-			    });
-			});
-			
-			function deleteUser(userId) {
-			    $.ajax({
-			        method: 'DELETE',
-			        url: 'http://' + ip + '/users/' + userId,
-			    }).done(function (user) {
-			        console.log("Deleted user " + userId);
-			    }).fail(function (jqXHR, textStatus, errorThrown) {
-			        console.error('Error deleting user:', textStatus, errorThrown);
-			    });
-			}
-			
-			$('#eliminar-button').click(function () {
-			    deleteUser(currentUser);
-			    openPrincipalBorr();
-			    closeOtro();
-			});
-			
-			function guardarPuntuacion(tiempoTranscurrido,user) {
-				console.log(tiempoTranscurrido)
-			    var usuario = {
-			        username: user.username,
-			        password: user.password,
-			        record: tiempoTranscurrido,
-			        id: user.id
-			    }
-			    updateUser(usuario);
-			}
-			
-			function partidaCompleta(tiempoTranscurrido) {
-			    var username = $('#userA').val();
-			
-			    getUserByUsername(username, function(user) {
-			        if (user) {
-			            if (tiempoTranscurrido < user.record) {
-			                guardarPuntuacion(tiempoTranscurrido, user);
-			            }
-			        } else {
-			            console.log("Usuario no encontrado");
-			        }
-			    });
-			}
+				var ip = location.host;
+				//var currentUser;
+				var currentUser = "Anonimo";
+
+
+				function createUser(user, callback) {
+					$.ajax({
+						method: "POST",
+						url: 'http://' + ip + '/users/',
+						data: JSON.stringify(user),
+						processData: false,
+						headers: {
+							"Content-Type": "application/json"
+						}
+					}).done(function (createdUser) {
+						console.log("User created: " + JSON.stringify(createdUser));
+						callback(createdUser);
+					}).fail(function (jqXHR, textStatus, errorThrown) {
+						console.error('Error creating user:', textStatus, errorThrown);
+					});
+				}
+
+				function getUserByUsername(username, callback) {
+					$.ajax({
+						method: "GET",
+						url: 'http://' + ip + '/users/search',
+						data: {username: username}
+					}).done(function (user) {
+						callback(user);
+					}).fail(function (jqXHR, textStatus) {
+						callback(null);
+					});
+				}
+
+				function getRecordByUsername(record, callback) {
+					$.ajax({
+						method: "GET",
+						url: 'http://' + ip + '/users/searchByRecord',
+						data: {record: record}
+					}).done(function (user) {
+						callback(user);
+					}).fail(function (jqXHR, textStatus) {
+						callback(null);
+					});
+				}
+
+				$('#registrarse-button').click(function () {
+					var name = $('#user').val();
+					var password = $('#password').val();
+
+					var usuario = {
+						username: name,
+						password: password
+					};
+
+					getUserByUsername(name, function (existingUser) {
+						if (!existingUser) {
+							createUser(usuario, function (usuarioConId) {
+								currentUser = usuarioConId.id;
+								openPrincipalReg();
+								closeForm();
+							});
+						} else {
+							console.log("Este usuario ya existe");
+							document.getElementById("errorReg").style.display = "block";
+							setTimeout(function () {
+								document.getElementById("errorReg").style.display = "none";
+							}, 3000);
+						}
+					});
+				});
+
+				$(document).ready(function () {
+					closePrincipalReg();
+					closePrincipalBorr();
+					openPrincipal();
+				});
+				function logUser(userId) {
+					$.ajax({
+						method: "GET",
+						url: 'http://' + ip + '/users/' + userId,
+					}).done(function (user) {
+						console.log("User logged: " + JSON.stringify(user));
+					}).fail(function (jqXHR, textStatus, errorThrown) {
+						console.error('Error logging user:', textStatus, errorThrown);
+					});
+				}
+
+				$('#iniciar-button').click(function () {
+					var name = $('#userA').val();
+					var contraseña = $('#passwordA').val();
+
+					getUserByUsername(name, function (existingUser) {
+						if (existingUser && existingUser.password === contraseña) {
+							currentUser = existingUser.id;
+							logUser(currentUser);
+							openDespuesInicio();
+							closeInicio();
+							closePrincipal();
+						} else {
+							console.log("Usuario Incorrecto")
+							document.getElementById("errorInicio").style.display = "block";
+							setTimeout(function () {
+								document.getElementById("errorInicio").style.display = "none";
+							}, 3000);
+						}
+					});
+				});
+
+				function updateUser(user) {
+					$.ajax({
+						method: 'PUT',
+						url: 'http://' + ip + '/users/' + user.id,
+						data: JSON.stringify(user),
+						processData: false,
+						headers: {
+							"Content-Type": "application/json"
+						}
+					}).done(function (user) {
+						console.log("Updated item: " + JSON.stringify(user));
+					}).fail(function (jqXHR, textStatus, errorThrown) {
+						console.error('Error updating user:', textStatus, errorThrown);
+					});
+				}
+
+				$('#cambiar-button').click(function () {
+					var contraseña = $('#nPasswordC').val();
+
+					getUserByUsername($('#userA').val(), function (user) {
+						if (user) {
+							var usuario = {
+								username: user.username,
+								password: contraseña,
+								id: user.id,
+								record: user.record
+							}
+							console.log(usuario.id);
+							updateUser(usuario);
+							openDespuesInicioMod();
+							closeOtro();
+						} else {
+							console.log('User not found');
+						}
+					});
+				});
+
+				function deleteUser(userId) {
+					$.ajax({
+						method: 'DELETE',
+						url: 'http://' + ip + '/users/' + userId,
+					}).done(function (user) {
+						console.log("Deleted user " + userId);
+					}).fail(function (jqXHR, textStatus, errorThrown) {
+						console.error('Error deleting user:', textStatus, errorThrown);
+					});
+				}
+
+				$('#eliminar-button').click(function () {
+					deleteUser(currentUser);
+					openPrincipalBorr();
+					closeOtro();
+				});
+
+				function guardarPuntuacion(tiempoTranscurrido, user) {
+					console.log(tiempoTranscurrido)
+					var usuario = {
+						username: user.username,
+						password: user.password,
+						record: tiempoTranscurrido,
+						id: user.id
+					}
+					updateUser(usuario);
+				}
+
+				function partidaCompleta(tiempoTranscurrido) {
+					var username = $('#userA').val();
+
+					getUserByUsername(username, function (user) {
+						if (user) {
+							if (tiempoTranscurrido < user.record) {
+								guardarPuntuacion(tiempoTranscurrido, user);
+							}
+						} else {
+							console.log("Usuario no encontrado");
+						}
+					});
+				}
 
 				// VARIABLES
 				var nivelActual;
@@ -921,33 +953,33 @@
 				var tiempoTranscurrido = new Date(); // VARIABLE QUE HAY QUE DEVOLVER PARA HOMECONTROLLER
 
 				function actualizarTiempo(escena) {
-					if(tiempoAcabar == false){
+					if (tiempoAcabar == false) {
 						tiempoInicio = Date.now(); // Guardar el tiempo de inicio en milisegundos
-					var tiempoTotal = 5 * 60; // 5 minutos en segundos
-					//var tiempoTotal = 60; // 5 minutos en segundos
-					var display = document.getElementById('tiempo');
-					var tiempo = setInterval(function () {
-						var minutos = Math.floor(tiempoTotal / 60);
-						var segundos = tiempoTotal % 60;
+						var tiempoTotal = 5 * 60; // 5 minutos en segundos
+						//var tiempoTotal = 60; // 5 minutos en segundos
+						var display = document.getElementById('tiempo');
+						var tiempo = setInterval(function () {
+							var minutos = Math.floor(tiempoTotal / 60);
+							var segundos = tiempoTotal % 60;
 
-						tiempoTranscurrido = (Date.now() - tiempoInicio) / 1000; // Calcular el tiempo transcurrido en segundos
-						tiempoConsumido++ ;
-						console.log(tiempoConsumido)
+							tiempoTranscurrido = (Date.now() - tiempoInicio) / 1000; // Calcular el tiempo transcurrido en segundos
+							tiempoConsumido++;
+							console.log(tiempoConsumido)
 
-						display.textContent = minutos.toString().padStart(2, '0') + 'm ' + segundos.toString().padStart(2, '0') + 's';
-						
-						if (--tiempoTotal < 0) {
-                            clearInterval(tiempo);
-                            // TiempoTranscurrido = (Date.now() - tiempoInicio) / 1000; // Calcular el tiempo transcurrido en segundos
-                            // TiempoTranscurrido = (tiempoTotal - tiempoInicio) / 1000; // Calcular el tiempo transcurrido en segundos
-                            display.textContent = 'Se acabo el tiempo';
-                            // Poner final malo
-                            escena.scene.start('FinalMalo');
-                        } else if (tiempoAcabar == true){
-							clearInterval(tiempo);
-						}
-					}, 1000);
-					
+							display.textContent = minutos.toString().padStart(2, '0') + 'm ' + segundos.toString().padStart(2, '0') + 's';
+
+							if (--tiempoTotal < 0) {
+								clearInterval(tiempo);
+								// TiempoTranscurrido = (Date.now() - tiempoInicio) / 1000; // Calcular el tiempo transcurrido en segundos
+								// TiempoTranscurrido = (tiempoTotal - tiempoInicio) / 1000; // Calcular el tiempo transcurrido en segundos
+								display.textContent = 'Se acabo el tiempo';
+								// Poner final malo
+								escena.scene.start('FinalMalo');
+							} else if (tiempoAcabar == true) {
+								clearInterval(tiempo);
+							}
+						}, 1000);
+
 					}
 				}
 
@@ -964,39 +996,39 @@
 					display.textContent = '';
 					tiempoTranscurrido = 219 //TIEMPO PREDETERMINADO, YA QUE NO SE HA CONSEGUIDO QUE TIEMPO TRANSCURRIDO PASE A SER ENTERO Y SIN ESTO NO SE VE SI SE ACTUALIZA EL RECORD
 					partidaCompleta(tiempoTranscurrido);
-						return  tiempoTranscurrido;
+					return tiempoTranscurrido;
 				}
-				
+
 				// Comprobación del Chat
 				let chatActive = false; // Flag que indica si esta activado o no el chat.
-				
+
 				// función para enviar mensajes AJAX
-				function mensajeChat (){
+				function mensajeChat() {
 					let mensaje = document.getElementById('mensaje');
 					let textoInput = mensaje.value.trim();
-					
-					if(textoInput){
+
+					if (textoInput) {
 						$.ajax({
-							//url:,
-							method:'POST',
-							data: JSON.stringify({textoInput:textoInput, user:currentUser ? currentUser : "Anonimo"}), // Si no hay usuario se leoa con anonimo
+							url: 'http://' + ip + '/enviar-mensaje',
+							method: 'POST',
+							data: JSON.stringify({message: textoInput, sender: currentUser ? currentUser : "Anonimo"}) // Si no hay usuario se leoa con anonimo
 						});
 					}
 				}
-				
+
 				// Deshabilitar movimiento de Cassidie cuando se está escribiendo en el chat
-				function disableMovement(){
+				function disableMovement() {
 					chatActive = true;
 				}
 				// Habilitar movimiento de Cassidie cuando se sale del chat
-				function enableMovement(){
+				function enableMovement() {
 					chatActive = false;
 				}
-				
-				
-				
-				
-				
+
+
+
+
+
 				// ----   NIVELES ----
 
 				class NivelBase extends Phaser.Scene {
@@ -1156,7 +1188,7 @@
 						if (this.gameOver || chatActive) { // ************************************************************
 							return;
 						}
-						
+
 
 						if (this.cursors.left.isDown) {
 							this.Seraphina.setVelocityX(-160);
@@ -1304,7 +1336,7 @@
 						this.pulsar3;
 						this.pulsar4;
 						this.numAleatorio;
-						
+
 					}
 
 					preload() {
@@ -1469,7 +1501,7 @@
 						}
 
 						nivelActual = 'NivelSubsuelo';
-						if (Phaser.Input.Keyboard.JustDown(this.keyP)) {
+						if (Phaser.Input.Keyboard.JustDown(this.keyP) && !chatActive) {
 							//this.scene.pause();
 							this.scene.sleep('NivelSubsuelo');
 							this.scene.launch('Ajustes');
@@ -1952,7 +1984,7 @@
 
 
 						//Y se manda a pausa desde aquí porque hay que controlarlo metiendo el string que identifica a cada escena y es diferente para cada una
-						if (Phaser.Input.Keyboard.JustDown(this.keyP)) {
+						if (Phaser.Input.Keyboard.JustDown(this.keyP) && !chatActive) {
 							//this.scene.pause();
 							this.scene.sleep('NivelBosque');
 							this.scene.launch('Ajustes');
@@ -2483,7 +2515,7 @@
 						nivelActual = 'NivelCielo';
 
 						//Y se manda a pausa desde aquí porque hay que controlarlo metiendo el string que identifica a cada escena y es diferente para cada una
-						if (Phaser.Input.Keyboard.JustDown(this.keyP)) {
+						if (Phaser.Input.Keyboard.JustDown(this.keyP) && !chatActive) {
 							//this.scene.pause();
 							this.scene.sleep('NivelCielo');
 							this.scene.launch('Ajustes');
@@ -3092,7 +3124,7 @@
 							console.log('Saliendo');
 							window.close();
 						});
-						
+
 						//BOTON PUNTUACIONES
 						//Se añade el boton de puntuaciones
 						const botonPuntuacion = this.add.image(975, 760, "puntuaciones").setInteractive();
@@ -3206,26 +3238,26 @@
 
 					update() { }
 				}
-				
+
 				class Puntuaciones extends Phaser.Scene {
 					constructor() {
 						super('Puntuaciones');
 						this.enter;
 						this.primerId;
-                        this.segundoId;
-                        this.tercerId;
-                        this.primerPunt;
-                        this.segundoPunt;
-                        this.tercerPunt;
+						this.segundoId;
+						this.tercerId;
+						this.primerPunt;
+						this.segundoPunt;
+						this.tercerPunt;
 					}
 					preload() {
-						
+
 					}
 					create() {
 
 						const punt = this.add.image(0, 0, 'FondoPunt').setDisplaySize(1920, 1080);
 						punt.setPosition(this.sys.game.config.width / 2, this.sys.game.config.height / 2);
-						
+
 						const botonSalir = this.add.image(975, 760, "salir").setInteractive();
 						botonSalir.setScale(0.20, 0.20)
 
@@ -3248,59 +3280,59 @@
 							//this.scene.resume(nivel);
 							this.scene.stop('Puntuaciones');
 						});
-						
-						
-						this.primerPunt = 500; 
+
+
+						this.primerPunt = 500;
 						this.primerId = null;
-						this.segundoPunt = 500; 
+						this.segundoPunt = 500;
 						this.segundoId = null;
-						this.tercerPunt = 500; 
+						this.tercerPunt = 500;
 						this.tercerId = null;
-						
-						
-						    this.getAndDisplayRecords();
-    }
 
-    getAndDisplayRecords() {
-        // Make an AJAX call to retrieve the user records
-        $.ajax({
-            method: "GET",
-            url: 'http://' + ip + '/users/',
-        }).done((users) => {
-            // Process the retrieved user records
-            users.forEach(user => {
-                if (user.record < this.primerPunt) {
-                    this.tercerPunt = this.segundoPunt;
-                    this.tercerId = this.segundoId;
-                    this.segundoPunt = this.primerPunt;
-                    this.segundoId = this.primerId;
-                    this.primerPunt = user.record;
-                    this.primerId = user.username;
-                } else if (user.record < this.segundoPunt) {
-                    this.tercerPunt = this.segundoPunt;
-                    this.tercerId = this.segundoId;
-                    this.segundoPunt = user.record;
-                    this.segundoId = user.username;
-                } else if (user.record < this.tercerPunt) {
-                    this.tercerPunt = user.record;
-                    this.tercerId = user.username;
-                }
-            });
 
-            // Display the records on the screen
-            this.add.text(750, 442, this.primerId, { fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6' });
-            this.add.text(1050, 442, this.primerPunt, { fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6' });
-            this.add.text(750, 530, this.segundoId, { fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6' });
-            this.add.text(1050, 530, this.segundoPunt, { fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6' });
-            this.add.text(750, 618, this.tercerId, { fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6' });
-            this.add.text(1050, 618, this.tercerPunt, { fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6' });
-        }).fail((jqXHR, textStatus) => {
-            console.error('Error retrieving user records:', textStatus);
-        });
-    }
-					
+						this.getAndDisplayRecords();
+					}
+
+					getAndDisplayRecords() {
+						// Make an AJAX call to retrieve the user records
+						$.ajax({
+							method: "GET",
+							url: 'http://' + ip + '/users/',
+						}).done((users) => {
+							// Process the retrieved user records
+							users.forEach(user => {
+								if (user.record < this.primerPunt) {
+									this.tercerPunt = this.segundoPunt;
+									this.tercerId = this.segundoId;
+									this.segundoPunt = this.primerPunt;
+									this.segundoId = this.primerId;
+									this.primerPunt = user.record;
+									this.primerId = user.username;
+								} else if (user.record < this.segundoPunt) {
+									this.tercerPunt = this.segundoPunt;
+									this.tercerId = this.segundoId;
+									this.segundoPunt = user.record;
+									this.segundoId = user.username;
+								} else if (user.record < this.tercerPunt) {
+									this.tercerPunt = user.record;
+									this.tercerId = user.username;
+								}
+							});
+
+							// Display the records on the screen
+							this.add.text(750, 442, this.primerId, {fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6'});
+							this.add.text(1050, 442, this.primerPunt, {fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6'});
+							this.add.text(750, 530, this.segundoId, {fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6'});
+							this.add.text(1050, 530, this.segundoPunt, {fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6'});
+							this.add.text(750, 618, this.tercerId, {fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6'});
+							this.add.text(1050, 618, this.tercerPunt, {fontFamily: 'serif', fontSize: '50px', color: '#F8E0E6'});
+						}).fail((jqXHR, textStatus) => {
+							console.error('Error retrieving user records:', textStatus);
+						});
+					}
+
 					update() {
-						
+
 					}
 				}
 

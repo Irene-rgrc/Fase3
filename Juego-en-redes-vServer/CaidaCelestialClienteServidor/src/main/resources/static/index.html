@@ -616,7 +616,7 @@
 			<div id="ventanaChat"></div>
 			<input type="text" id='mensaje' placeholder="Escribe tu mensaje aquí..." onfocus="disableMovement()"
 				onblur="enableMovement()"> <!-- / QUITAR O NO -->
-			<button type="button" id="mensajeEnviar" onclick="mensajeChat()">Enviar</button>
+			<button type="button" id="mensajeEnviar">Enviar</button>
 		</div>
 
 		<!-- JUEGO CODIGO -->
@@ -755,7 +755,7 @@
 
 				var ip = location.host;
 				//var currentUser;
-				var currentUser = "Anonimo";
+				var currentUser = -1;
 
 
 				function createUser(user, callback) {
@@ -1004,32 +1004,36 @@
 				// Comprobación del Chat
 				let chatActive = false; // Flag que indica si esta activado o no el chat.
 
-				// función para enviar mensajes AJAX
-				function mensajeChat() {
-					let mensaje = document.getElementById('mensaje');
-					let textoInput = mensaje.value.trim();
-
-					if (textoInput) {
-						// Obtener el usuario actual o "Anonimo"
-						let sender = currentUser ? currentUser : "Anonimo";
-						// Mostrar el mensaje en el chat
-						let ventanaChat = document.getElementById('ventanaChat');
-						ventanaChat.innerHTML += `<p><strong>${sender}:</strong> ${textoInput}</p>`;
-
-						// Enviar el mensaje al servidor
-						$.ajax({
-							url: 'http://' + ip + '/enviar-mensaje',
-							method: 'POST',
-							data: JSON.stringify({message: textoInput, sender: currentUser ? currentUser : "Anonimo"}) // Si no hay usuario se leoa con anonimo
-						});
-						// Limpiar el input de mensaje
-						mensaje.value = '';
-					}
+								// función para enviar mensajes AJAX
+				function mensajeChat (message){
+					$.ajax({
+						method: 'POST',
+						url: 'http://' + ip + '/users/chat',
+						data: JSON.stringify(message),
+						processData: false,
+			        	headers: {
+			            	"Content-Type": "application/json"
+			        	}
+			    	}).done(function (createdUser) {
+			    	}).fail(function (jqXHR, textStatus, errorThrown) {
+			        console.error('Error creating message:', textStatus, errorThrown);
+			    	});
 				}
+				
+				$('#mensajeEnviar').click(function(){
+			    	var mensajeA = $('#mensaje').val();
+			
+			    	var message = {
+			        	userId: currentUser,
+			        	username: "Manolo",
+			        	message: mensajeA
+			    	};
+			    	mensajeChat(message)
+				})
 
 				// Función para obtener los mensajes del servidor
 				function getMensajesChat() {
-					$.ajax({
+					/*$.ajax({
 						url: 'http://' + ip + '/obtener-mensajes',
 						method: 'GET',
 						success: function (data) {
@@ -1045,10 +1049,10 @@
 							// Hacer scroll hacia abajo para ver los últimos mensajes
 							ventanaChat.scrollTop = ventanaChat.scrollHeight;
 						}
-					});
+					});*/
 				}
 				// Llamar periódicamente a la función getMensajesChat cada 3 segundos para actualizar el chat
-				setInterval(getMensajesChat, 3000);
+				//setInterval(getMensajesChat, 3000);
 
 				// Deshabilitar movimiento de Cassidie cuando se está escribiendo en el chat
 				function disableMovement() {

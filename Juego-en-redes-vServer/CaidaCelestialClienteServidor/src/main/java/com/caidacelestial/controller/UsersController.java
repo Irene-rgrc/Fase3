@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.caidacelestial.entity.User;
+import com.caidacelestial.entity.Message;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -95,6 +96,18 @@ public class UsersController {
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    
+    
+    @PostMapping(value = "/chat")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Message mensaje(@RequestBody Message mensaje) throws IOException {
+    	if(mensaje.getUserId()!= (-1)) {
+    	mensaje.setUsername(users.get(mensaje.getUserId()).getUsername());
+    	}
+    	else {mensaje.setUsername("Anonimo");}
+    	System.out.print(mensaje.getUsername() + ":" + mensaje.getMessage());
+        return mensaje;
     }
 
     @PostConstruct

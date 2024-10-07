@@ -1232,8 +1232,13 @@ setInterval(getMensajesChat, 3000);
 					}
 
 					movimientoPersonajes() {
-						if (this.gameOver || chatActive) { // ************************************************************
+						if (this.gameOver) { // ************************************************************
 							return;
+						}
+						if(chatActive){
+							this.scene.sleep();
+							this.scene.launch('Ajustes');
+							this.parar();
 						}
 
 
@@ -3251,6 +3256,8 @@ setInterval(getMensajesChat, 3000);
 						botonSalir.on('pointerdown', (pointer) => {
 							console.log('Saliendo de Ajustes');
 							this.scene.wake(nivelActual);
+							//chatActive = false;
+							document.getElementById('mensaje').blur();
 							//this.scene.resume(nivel);
 							this.scene.stop('Ajustes');
 						});

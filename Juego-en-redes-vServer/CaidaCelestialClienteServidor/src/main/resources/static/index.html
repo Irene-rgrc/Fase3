@@ -1004,56 +1004,65 @@
 				// Comprobación del Chat
 				let chatActive = false; // Flag que indica si esta activado o no el chat.
 
-								// función para enviar mensajes AJAX
-				function mensajeChat (message){
-					$.ajax({
-						method: 'POST',
-						url: 'http://' + ip + '/users/chat',
-						data: JSON.stringify(message),
-						processData: false,
-			        	headers: {
-			            	"Content-Type": "application/json"
-			        	}
-			    	}).done(function (createdUser) {
-			    	}).fail(function (jqXHR, textStatus, errorThrown) {
-			        console.error('Error creating message:', textStatus, errorThrown);
-			    	});
-				}
-				
-				$('#mensajeEnviar').click(function(){
-			    	var mensajeA = $('#mensaje').val();
-			
-			    	var message = {
-			        	userId: currentUser,
-			        	username: "Manolo",
-			        	message: mensajeA
-			    	};
-			    	mensajeChat(message)
-				})
+// Función para enviar mensajes AJAX
+function mensajeChat(message) {
+    $.ajax({
+        method: 'POST',
+        url: 'http://' + ip + '/users/chat', // Asegúrate de que ip esté definido correctamente
+        data: JSON.stringify(message),
+        contentType: "application/json", // Define correctamente el tipo de contenido
+        success: function(response) {
+            console.log('Mensaje enviado correctamente:', response);
+            $('#mensaje').val(''); // Limpia el campo del mensaje tras el envío
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error al enviar el mensaje:', textStatus, errorThrown);
+        }
+    });
+}
 
-				// Función para obtener los mensajes del servidor
-				function getMensajesChat() {
-					/*$.ajax({
-						url: 'http://' + ip + '/obtener-mensajes',
-						method: 'GET',
-						success: function (data) {
-							// 'data' debe ser un array de mensajes [{sender: 'Usuario', message: 'Texto'}, ...]
-							let ventanaChat = document.getElementById('ventanaChat');
-							ventanaChat.innerHTML = ''; // Limpiar el contenido actual
+// Evento para enviar el mensaje al hacer clic en el botón
+$('#mensajeEnviar').click(function() {
+    var mensajeA = $('#mensaje').val().trim(); // Trim para evitar espacios en blanco
 
-							// Recorrer los mensajes y mostrarlos en el chat
-							data.forEach(function (msg) {
-								ventanaChat.innerHTML += `<p><strong>${msg.sender ? msg.sender : "Anonimo"}:</strong> ${msg.message}</p>`;
-							});
+    if (mensajeA.length > 0) { // Verifica que no esté vacío
+        var message = {
+            userId: currentUser || 1, // Cambia por el userId correcto
+            username: "Manolo", // Puedes cambiarlo por el nombre correcto
+            message: mensajeA
+        };
+        mensajeChat(message);
+    } else {
+        alert('No puedes enviar un mensaje vacío.');
+    }
+});
+// Función para obtener los mensajes del servidor
+function getMensajesChat() {
+    $.ajax({
+        url: 'http://' + ip + '/users/obtener-mensajes', // Asegúrate de que ip esté definido correctamente
+        method: 'GET',
+        success: function(data) {
+            let ventanaChat = document.getElementById('ventanaChat');
+            ventanaChat.innerHTML = ''; // Limpiar el contenido actual
 
-							// Hacer scroll hacia abajo para ver los últimos mensajes
-							ventanaChat.scrollTop = ventanaChat.scrollHeight;
-						}
-					});*/
-				}
-				// Llamar periódicamente a la función getMensajesChat cada 3 segundos para actualizar el chat
-				//setInterval(getMensajesChat, 3000);
+            if (Array.isArray(data)) {
+                data.forEach(function(msg) {
+                    ventanaChat.innerHTML += `<p><strong>${msg.sender ? msg.sender : "Anonimo"}:</strong> ${msg.message}</p>`;
+                });
+            } else {
+                console.error('La respuesta no es un array:', data);
+            }
 
+            ventanaChat.scrollTop = ventanaChat.scrollHeight; // Hacer scroll hacia abajo para ver los últimos mensajes
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error al obtener los mensajes:', textStatus, errorThrown);
+        }
+    });
+}
+
+// Llama periódicamente a getMensajesChat cada 3 segundos
+setInterval(getMensajesChat, 3000);
 				// Deshabilitar movimiento de Cassidie cuando se está escribiendo en el chat
 				function disableMovement() {
 					chatActive = true;

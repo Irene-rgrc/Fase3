@@ -435,6 +435,23 @@
 		html {
 			font-size: xx-large;
 		}
+		
+		#chat{
+			color:black;
+			width: 150px;
+			height:70px;
+			position: relative;
+			z-index: 999;
+			display:inline-block;	
+		}
+		#ventanaChat{
+			color:aqua;
+			width: 60px;
+			height:70px;
+			position: relative;
+			z-index: 999;
+			display:inline-block;
+		}
 	</style>
 </head>
 
@@ -549,7 +566,15 @@
 				<button type="button" class="btn cancelar" onclick="closeInicio()"> </button>
 			</form>
 		</div>
-
+		
+		<!-- EL CHAT WORKING PROGRESS::::::: -->
+		<div id="chat">
+			<div id="ventanaChat"></div>
+			<input type="text" id='mensaje' placeholder="Escribe tu mensaje aquí..." required>
+			<button id="mensajeEnviar" onclick="mensajeChat()"></button>
+		</div>
+		
+		<!-- JUEGO CODIGO -->
 		<div class="otros-popup" id="otrosForm">
 			<form class="otros-container">
 				<h1>Cambiar contraseña</h1>

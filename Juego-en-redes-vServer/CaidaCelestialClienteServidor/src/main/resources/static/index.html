@@ -957,7 +957,7 @@
 				function actualizarTiempo(escena) {
 					if (tiempoAcabar == false) {
 						tiempoInicio = Date.now(); // Guardar el tiempo de inicio en milisegundos
-						var tiempoTotal = 5 * 60; // 5 minutos en segundos
+						var tiempoTotal = 1 * 60; // 5 minutos en segundos
 						//var tiempoTotal = 60; // 5 minutos en segundos
 						var display = document.getElementById('tiempo');
 						var tiempo = setInterval(function () {
@@ -965,7 +965,7 @@
 							var segundos = tiempoTotal % 60;
 
 							tiempoTranscurrido = (Date.now() - tiempoInicio) / 1000; // Calcular el tiempo transcurrido en segundos
-							tiempoConsumido++;
+							var tiempoConsumido= +1;
 							console.log(tiempoConsumido)
 
 							display.textContent = minutos.toString().padStart(2, '0') + 'm ' + segundos.toString().padStart(2, '0') + 's';
@@ -996,7 +996,7 @@
 					tiempoAcabar = true; // Detener el contador
 					var display = document.getElementById('tiempo');
 					display.textContent = '';
-					tiempoTranscurrido = 219 //TIEMPO PREDETERMINADO, YA QUE NO SE HA CONSEGUIDO QUE TIEMPO TRANSCURRIDO PASE A SER ENTERO Y SIN ESTO NO SE VE SI SE ACTUALIZA EL RECORD
+					//tiempoTranscurrido = 219 //TIEMPO PREDETERMINADO, YA QUE NO SE HA CONSEGUIDO QUE TIEMPO TRANSCURRIDO PASE A SER ENTERO Y SIN ESTO NO SE VE SI SE ACTUALIZA EL RECORD
 					partidaCompleta(tiempoTranscurrido);
 					return tiempoTranscurrido;
 				}

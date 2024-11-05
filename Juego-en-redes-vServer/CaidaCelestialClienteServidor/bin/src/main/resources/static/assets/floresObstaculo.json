@@ -1,0 +1,75 @@
+{
+	"frames": {
+		"1.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 862,
+				"h": 1760
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 862,
+				"h": 1760
+			},
+			"sourceSize": {
+				"w": 862,
+				"h": 1760
+			}
+		},
+		"2.png": {
+			"frame": {
+				"x": 865,
+				"y": 1,
+				"w": 862,
+				"h": 1760
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 862,
+				"h": 1760
+			},
+			"sourceSize": {
+				"w": 862,
+				"h": 1760
+			}
+		},
+		"3.png": {
+			"frame": {
+				"x": 1729,
+				"y": 1,
+				"w": 862,
+				"h": 1760
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 862,
+				"h": 1760
+			},
+			"sourceSize": {
+				"w": 862,
+				"h": 1760
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "floresObstaculo.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 2592,
+			"h": 1762
+		},
+		"scale": "1"
+	}
+}

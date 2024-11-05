@@ -120,13 +120,15 @@ public class UsersController {
             mensaje.setUsername("Anonimo");
         }
         chatMessages.add(mensaje); // Agregar el mensaje a la lista de chat
-        System.out.println(mensaje.getUserId() + ": " + mensaje.getMessage());
+        guardarChat();
+        //System.out.println(mensaje.getUserId() + ": " + mensaje.getMessage());
         return mensaje;
     }
 
     // Endpoint para obtener todos los mensajes del chat
     @GetMapping("/obtener-mensajes")
-    public List<Message> obtenerMensajes() {
+    public List<Message> obtenerMensajes() throws ClassNotFoundException, IOException {
+    	cargarChat();
         return chatMessages; // Retornar todos los mensajes almacenados
     }
 
@@ -144,6 +146,16 @@ public class UsersController {
             // Handle exceptions (file not found, empty file, etc.)
         }
     }
+    @PostConstruct
+    public void cargarChat() throws IOException, ClassNotFoundException {
+        try (FileInputStream fileInputStream = new FileInputStream("src/main/resources/chat.txt");
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+        	List<Message> chatEnFichero = (List<Message>) objectInputStream.readObject();
+            chatMessages = chatEnFichero;
+        } catch (IOException | ClassNotFoundException e) {
+            // Handle exceptions (file not found, empty file, etc.)
+        }
+    }
 
     // Guardar usuarios en un archivo antes de apagar el servidor
     @PreDestroy
@@ -151,6 +163,13 @@ public class UsersController {
         try (FileOutputStream fileOutputStream = new FileOutputStream("src/main/resources/users.txt");
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(users);
+        }
+    }
+    @PreDestroy
+    public void guardarChat() throws IOException {
+        try (FileOutputStream fileOutputStream = new FileOutputStream("src/main/resources/chat.txt");
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectOutputStream.writeObject(chatMessages);
         }
     }
 }

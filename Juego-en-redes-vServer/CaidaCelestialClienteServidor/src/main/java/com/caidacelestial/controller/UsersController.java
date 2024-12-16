@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.caidacelestial.entity.User;
 import com.caidacelestial.entity.Message;
@@ -27,6 +28,10 @@ public class UsersController {
     ConcurrentHashMap<Long, User> users = new ConcurrentHashMap<>();
     private List<Message> chatMessages = new ArrayList<>(); // Lista para almacenar los mensajes
     long nextId = 1; // Initial value
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+    
+    //String encodedPass = encoder.encode("myPassword");
+    //boolean success = encoder.matches(p, encodedPass );
 
     // Obtener todos los usuarios
     @GetMapping(value = "/")
@@ -40,6 +45,7 @@ public class UsersController {
     public User usuario(@RequestBody User usuario) throws IOException {
         long id = nextId++;
         usuario.setId(id);
+        usuario.setPassword(encoder.encode(usuario.getPassword()));
         usuario.setRecord(300);
         users.put(id, usuario);
         guardarUsuarios();
@@ -47,14 +53,23 @@ public class UsersController {
     }
 
     // Actualizar un usuario existente
-    @PutMapping("/{id}")
-    public ResponseEntity<User> actualizaUser(@PathVariable long id, @RequestBody User userActualizado) throws IOException {
+    @PutMapping("/password/{id}")
+    public ResponseEntity<User> actualizaPassword(@PathVariable long id, @RequestParam String password) throws IOException {
         User savedUser = users.get(id);
         if (savedUser != null) {
-            savedUser.setUsername(userActualizado.getUsername());
-            savedUser.setPassword(userActualizado.getPassword());
-            savedUser.setRecord(userActualizado.getRecord()); 
-
+            savedUser.setPassword(encoder.encode(password));
+            guardarUsuarios();
+            return new ResponseEntity<>(savedUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @PutMapping("/record/{id}")
+    public ResponseEntity<User> actualizaRecord(@PathVariable long id, @RequestParam long record) throws IOException {
+        User savedUser = users.get(id);
+        if (savedUser != null) {
+            savedUser.setRecord(record); 
             guardarUsuarios();
             return new ResponseEntity<>(savedUser, HttpStatus.OK);
         } else {
@@ -75,24 +90,22 @@ public class UsersController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    // Obtener un usuario por ID
+    
     @GetMapping("/{id}")
-    public ResponseEntity<User> loggearUser(@PathVariable long id) {
-        User savedUser = users.get(id);
-        if (savedUser != null) {
-            return new ResponseEntity<>(savedUser, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<User> loginUser(@PathVariable long id, @RequestParam String password) throws IOException  {
+        User loggedUser = users.get(id);
+        if (encoder.matches(password, loggedUser.getPassword())) {
+            return new ResponseEntity<>(loggedUser, HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // Buscar un usuario por nombre de usuario
     @GetMapping("/search")
-    public ResponseEntity<User> getUserByUsername(@RequestParam String username) {
+    public ResponseEntity<Long> getUserByUsername(@RequestParam String username) {
         for (User user : users.values()) {
             if (user.getUsername().equals(username)) {
-                return new ResponseEntity<>(user, HttpStatus.OK);
+                return new ResponseEntity<>(user.getId(), HttpStatus.OK);
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

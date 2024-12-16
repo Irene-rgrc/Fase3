@@ -754,8 +754,12 @@
 
 
 				var ip = location.host;
-				//var currentUser;
-				var currentUser = -1;
+				var currentUser = {
+					username: "",
+					password: "",
+					id: -1,
+					record: 300
+				}
 
 
 				function createUser(user, callback) {
@@ -775,25 +779,37 @@
 					});
 				}
 
-				function getUserByUsername(username, callback) {
-					$.ajax({
-						method: "GET",
-						url: 'http://' + ip + '/users/search',
-						data: {username: username}
-					}).done(function (user) {
-						callback(user);
-					}).fail(function (jqXHR, textStatus) {
-						callback(null);
-					});
-				}
-
-				function getRecordByUsername(record, callback) {
+				/*function getRecordByUsername(record, callback) {
 					$.ajax({
 						method: "GET",
 						url: 'http://' + ip + '/users/searchByRecord',
 						data: {record: record}
 					}).done(function (user) {
 						callback(user);
+					}).fail(function (jqXHR, textStatus) {
+						callback(null);
+					});
+				}*/
+				
+				function getUserByUsername(username, callback) {
+					$.ajax({
+						method: "GET",
+						url: 'http://' + ip + '/users/search',
+						data: {username: username}
+					}).done(function (identificacion) {
+						callback(identificacion);
+					}).fail(function (jqXHR, textStatus) {
+						callback(null);
+					});
+				}
+				
+				function logUser(id, password, callback) {
+					$.ajax({
+						method: 'GET',
+						url: 'http://' + ip + '/users/' + id,
+						data: {password: password},
+					}).done(function (loggedUser) {
+						callback(loggedUser);
 					}).fail(function (jqXHR, textStatus) {
 						callback(null);
 					});
@@ -808,10 +824,13 @@
 						password: password
 					};
 
-					getUserByUsername(name, function (existingUser) {
-						if (!existingUser) {
+					getUserByUsername(name, function (identificacion) {
+						if (!identificacion) {
 							createUser(usuario, function (usuarioConId) {
-								currentUser = usuarioConId.id;
+								currentUser.username = usuarioConId.username;
+								currentUser.password = usuarioConId.password;
+								currentUser.id = usuarioConId.id;
+								currentUser.record = usuarioConId.record;
 								openPrincipalReg();
 								closeForm();
 							});
@@ -830,7 +849,7 @@
 					closePrincipalBorr();
 					openPrincipal();
 				});
-				function logUser(userId) {
+				/*function logUser(userId) {
 					$.ajax({
 						method: "GET",
 						url: 'http://' + ip + '/users/' + userId,
@@ -839,19 +858,32 @@
 					}).fail(function (jqXHR, textStatus, errorThrown) {
 						console.error('Error logging user:', textStatus, errorThrown);
 					});
-				}
+				}*/
 
 				$('#iniciar-button').click(function () {
 					var name = $('#userA').val();
-					var contraseña = $('#passwordA').val();
+					var password = $('#passwordA').val();
 
-					getUserByUsername(name, function (existingUser) {
-						if (existingUser && existingUser.password === contraseña) {
-							currentUser = existingUser.id;
-							logUser(currentUser);
-							openDespuesInicio();
-							closeInicio();
-							closePrincipal();
+					getUserByUsername(name, function (identificacion) {
+						if (identificacion) {
+							logUser(identificacion, password, function (usuarioLoggeado) {
+								if(usuarioLoggeado){
+									currentUser.username = usuarioLoggeado.username;
+									currentUser.password = usuarioLoggeado.password;
+									currentUser.id = usuarioLoggeado.id;
+									currentUser.record = usuarioLoggeado.record;
+									openDespuesInicio();
+									closeInicio();
+									closePrincipal();
+								} else {
+									console.log("Usuario Incorrecto")
+									document.getElementById("errorInicio").style.display = "block";
+									setTimeout(function () {
+									document.getElementById("errorInicio").style.display = "none";
+									}, 3000);
+								}
+							});
+							
 						} else {
 							console.log("Usuario Incorrecto")
 							document.getElementById("errorInicio").style.display = "block";
@@ -862,15 +894,23 @@
 					});
 				});
 
-				function updateUser(user) {
+				function updatePassword(id, password) {
 					$.ajax({
 						method: 'PUT',
-						url: 'http://' + ip + '/users/' + user.id,
-						data: JSON.stringify(user),
-						processData: false,
-						headers: {
-							"Content-Type": "application/json"
-						}
+						url: 'http://' + ip + '/users/password/' + id,
+						data: {password: password},
+					}).done(function (user) {
+						console.log("Updated item: " + JSON.stringify(user));
+					}).fail(function (jqXHR, textStatus, errorThrown) {
+						console.error('Error updating user:', textStatus, errorThrown);
+					});
+				}
+				
+				function updateRecord(id, password, record) {
+					$.ajax({
+						method: 'PUT',
+						url: 'http://' + ip + '/users/record/' + id,
+						data: {record: record},
 					}).done(function (user) {
 						console.log("Updated item: " + JSON.stringify(user));
 					}).fail(function (jqXHR, textStatus, errorThrown) {
@@ -879,18 +919,12 @@
 				}
 
 				$('#cambiar-button').click(function () {
-					var contraseña = $('#nPasswordC').val();
+					var password = $('#nPasswordC').val();
 
-					getUserByUsername($('#userA').val(), function (user) {
-						if (user) {
-							var usuario = {
-								username: user.username,
-								password: contraseña,
-								id: user.id,
-								record: user.record
-							}
-							console.log(usuario.id);
-							updateUser(usuario);
+					getUserByUsername($('#userA').val(), function (identificacion) {
+						if (identificacion) {
+							currentUser.id = identificacion;
+							updatePassword(identificacion, password);
 							openDespuesInicioMod();
 							closeOtro();
 						} else {
@@ -911,29 +945,23 @@
 				}
 
 				$('#eliminar-button').click(function () {
-					deleteUser(currentUser);
+					deleteUser(currentUser.id);
 					openPrincipalBorr();
 					closeOtro();
 				});
 
 				function guardarPuntuacion(tiempoTranscurrido, user) {
 					console.log(tiempoTranscurrido)
-					var usuario = {
-						username: user.username,
-						password: user.password,
-						record: tiempoTranscurrido,
-						id: user.id
-					}
-					updateUser(usuario);
+					updateRecord(identificacion, tiempoTranscurrido);
 				}
 
 				function partidaCompleta(tiempoTranscurrido) {
 					var username = $('#userA').val();
 
 					getUserByUsername(username, function (user) {
-						if (user) {
+						if (identificacion) {
 							if (tiempoTranscurrido < user.record) {
-								guardarPuntuacion(tiempoTranscurrido, user);
+								guardarPuntuacion(tiempoTranscurrido, identificacion);
 							}
 						} else {
 							console.log("Usuario no encontrado");
@@ -1016,7 +1044,7 @@ function mensajeChat(message) {
             $('#mensaje').val(''); // Limpia el campo del mensaje tras el envío
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Error al enviar el mensaje:', textStatus, errorThrown, currentUser);
+            console.error('Error al enviar el mensaje:', textStatus, errorThrown, currentUser.id);
         }
     });
 }
@@ -1027,7 +1055,7 @@ $('#mensajeEnviar').click(function() {
 
     if (mensajeA.length > 0) { // Verifica que no esté vacío
         var message = {
-            userId: currentUser || 1, // Cambia por el userId correcto
+            userId: currentUser.id || 1, // Cambia por el userId correcto
             username: "Manolo", // Puedes cambiarlo por el nombre correcto
             message: mensajeA
         };

@@ -2881,23 +2881,33 @@ setInterval(getMensajesChat, 3000);
 				}
 
 				class Creditos extends Phaser.Scene {
-					constructor() {
-						super('Creditos');
-						this.enter;
-					}
-					preload() {
-					}
-					create() {
+				    constructor() {
+				        super('Creditos');
+				    }
 
-						this.enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-						const imagen15 = this.add.image(0, 0, 'Imagen15').setDisplaySize(1920, 1080);
-						imagen15.setPosition(this.sys.game.config.width / 2, this.sys.game.config.height / 2);
-					}
-					update() {
-						if (Phaser.Input.Keyboard.JustDown(this.enter)) {
-							this.scene.start('VolverAJugar');
-						}
-					}
+				    preload() {
+				        this.load.image('fondoCreditos', 'CreditosImagenes/Creditos2.png'); // Clave única para créditos
+				    }
+
+				    create() {
+				        // Limpiar texturas previas
+				        this.textures.remove('fondoTutorial');
+				        this.textures.remove('fondoMenuInicio');
+
+				        const fondo = this.add.image(960, 540, 'fondoCreditos');
+				        fondo.setDisplaySize(1920, 1080);
+
+				        // Ejemplo de botón de regreso
+				        this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+				    }
+				    update() {
+				        // Detectar si se ha pulsado ENTER
+				        if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+				            console.log('Regresando al menú principal');
+				            this.scene.start('MenuInicio');
+				        }
+				    }
+
 				}
 
 				class VolverAJugar extends Phaser.Scene {
@@ -2939,15 +2949,20 @@ setInterval(getMensajesChat, 3000);
 
 
 				class Tutorial extends Phaser.Scene {
-					constructor() {
-						super('Tutorial');
-					}
+				   constructor() {
+				       super('Tutorial');
+				   }
 
-					preload() {
-					}
+				   preload() {
+				       this.load.image('fondoTutorial', 'assets/MenuInicio.PNG');
+				       this.load.image('BotonjugarTutorial', 'assets/BotonJuego.png'); // Cambiamos clave única
+				       this.load.image('BotonTutorialImagen', 'assets/BotonTutorial.png'); // Cambiamos clave única
+				   }
 
-					create() {
-
+				   create() {
+				       // Asegurarse de que no haya conflictos previos
+				       this.textures.remove('fondoCreditos');
+				       this.textures.remove('fondoMenuInicio');
 
 						//Fondo
 						const fondo = this.add.image(0, 0, 'fondoTutorial').setDisplaySize(1920, 1080);
@@ -3099,6 +3114,7 @@ setInterval(getMensajesChat, 3000);
 						this.load.image('Boton', 'CreditosImagenes/BotonVolverJugar.png');
 						this.load.image('fondoTutorial', 'assets/MenuInicio.PNG');
 						this.load.image('Botonjugar', 'assets/BotonJuego.png');
+						this.load.image('creditos', 'CreditosImagenes/BotonCreditos.png');
 						this.load.image('BotonTutorial', 'assets/BotonTutorial.png');
 						this.load.image('fondoI', 'assets/MenuInicio.PNG');
 						this.load.image('jugar', 'assets/BotonJugar.png');
@@ -3120,6 +3136,8 @@ setInterval(getMensajesChat, 3000);
 					}
 
 					create() {
+						this.textures.remove('fondoCreditos');
+						this.textures.remove('fondoTutorial');
 
 						//Fondo
 						const fondo = this.add.image(0, 0, 'fondoI').setDisplaySize(1920, 1080);
@@ -3133,104 +3151,145 @@ setInterval(getMensajesChat, 3000);
 						//Tecla Enter
 						this.enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
+						// Función para escalar proporcionalmente basado en el ancho deseado
+						function setUniformSize(button, targetWidth, targetHeight) {
+						    const texture = button.texture.getSourceImage();
+						    const scaleX = targetWidth / texture.width;
+						    const scaleY = targetHeight / texture.height;
+						    const scale = Math.min(scaleX, scaleY); // Escalar para que quepa dentro del tamaño deseado
+						    button.setScale(scale);
+						}
+
+						// Dimensiones uniformes para los botones
+						const BUTTON_WIDTH = 300; // Ancho deseado
+						const BUTTON_HEIGHT = 100; // Alto deseado
+
+						// Posiciones iniciales y separación vertical
+						let startY = 500;
+						const offsetY = 120; // Separación entre botones
+
 						//-------------------------------------------------------------------------------------------------
-						//BOTON JUGAR
-						//Se añade el boton para jugar
-						const botonJugar = this.add.image(960, 500, "jugar").setInteractive();
-						botonJugar.setScale(0.35, 0.35)
+						               //BOTON JUGAR
+						               //Se añade el boton para jugar
+						               const botonJugar = this.add.image(960, 400, "jugar").setInteractive();
+						               botonJugar.setScale(0.35, 0.35)
 
-						//Al pasar por encima se pone mas oscuro y crece en tamaño
-						botonJugar.on('pointerover', function () {
-							this.setTint(0x555555);
-							this.setScale(0.40, 0.40);
-						});
+						               //Al pasar por encima se pone mas oscuro y crece en tamaño
+						               botonJugar.on('pointerover', function () {
+						                   this.setTint(0x555555);
+						                   this.setScale(0.40, 0.40);
+						               });
 
-						//Al quitar el cursor el boton vuelve al tamaño original
-						botonJugar.on('pointerout', function () {
-							this.clearTint();
-							this.setScale(0.35, 0.35);
-						});
+						               //Al quitar el cursor el boton vuelve al tamaño original
+						               botonJugar.on('pointerout', function () {
+						                   this.clearTint();
+						                   this.setScale(0.35, 0.35);
+						               });
 
-						//Al hacer click en el boton comienza el juego
-						botonJugar.on('pointerdown', (pointer) => {
-							console.log('Comenzando Juego');
-							this.scene.start('Tutorial');
-						});
+						               //Al hacer click en el boton comienza el juego
+						               botonJugar.on('pointerdown', (pointer) => {
+						                   console.log('Comenzando Juego');
+						                   this.scene.start('Tutorial');
+						               });
 
-						//BOTON AJUSTES
-						//Se añade el boton de ajustes
-						const botonAjustes = this.add.image(973, 630, "ajustes").setInteractive();
-						botonAjustes.setScale(0.25, 0.25)
+						               //BOTON AJUSTES
+						               //Se añade el boton de ajustes
+						               const botonAjustes = this.add.image(973, 530, "ajustes").setInteractive();
+						               botonAjustes.setScale(0.30, 0.30)
 
-						//Al pasar por encima se pone mas oscuro y crece en tamaño
-						botonAjustes.on('pointerover', function () {
-							this.setTint(0x555555);
-							this.setScale(0.28, 0.28);
-						});
+						               //Al pasar por encima se pone mas oscuro y crece en tamaño
+						               botonAjustes.on('pointerover', function () {
+						                   this.setTint(0x555555);
+						                   this.setScale(0.35, 0.35);
+						               });
 
-						//Al quitar el cursor el boton vuelve al tamaño original
-						botonAjustes.on('pointerout', function () {
-							this.clearTint();
-							this.setScale(0.25, 0.25);
-						});
+						               //Al quitar el cursor el boton vuelve al tamaño original
+						               botonAjustes.on('pointerout', function () {
+						                   this.clearTint();
+						                   this.setScale(0.30, 0.30);
+						               });
 
-						//Al hacer click en el boton se va a ajustes
-						botonAjustes.on('pointerdown', (pointer) => {
-							this.scene.sleep('MenuInicio');
-							this.scene.launch('Ajustes');
-							console.log('Pantalla ajustes');
+						               //Al hacer click en el boton se va a ajustes
+						               botonAjustes.on('pointerdown', (pointer) => {
+						                   this.scene.sleep('MenuInicio');
+						                   this.scene.launch('Ajustes');
+						                   console.log('Pantalla ajustes');
 
-						});
+						               });
+									   const botonPuntuacion = this.add.image(975, 680, "puntuaciones").setInteractive();
+									   botonPuntuacion.setScale(0.085, 0.085)
 
-						//BOTON SALIR
-						//Se añade el boton de salir
-						const botonSalir = this.add.image(975, 870, "salir").setInteractive();
-						botonSalir.setScale(0.15, 0.15)
+									   //Al pasar por encima se pone mas oscuro y crece en tamaño
+									   botonPuntuacion.on('pointerover', function () {
+									   		this.setTint(0x555555);
+									   		this.setScale(0.11, 0.11);
+									   		});
 
-						//Al pasar por encima se pone mas oscuro y crece en tamaño
-						botonSalir.on('pointerover', function () {
-							this.setTint(0x555555);
-							this.setScale(0.20, 0.20);
-						});
+									   	//Al quitar el cursor el boton vuelve al tamaño original
+									   	botonPuntuacion.on('pointerout', function () {
+									   		this.clearTint();
+									   		this.setScale(0.085, 0.085);
+									   		});
 
-						//Al quitar el cursor el boton vuelve al tamaño original
-						botonSalir.on('pointerout', function () {
-							this.clearTint();
-							this.setScale(0.15, 0.15);
-						});
+									   	//Al hacer click en el boton se va a ajustes
+									   	botonPuntuacion.on('pointerdown', (pointer) => {
+									   		this.scene.sleep('MenuInicio');
+									   		this.scene.launch('Puntuaciones');
+									   		console.log('Pantalla de Puntuaciones');
 
-						//Al hacer click en el boton se sale del juego
-						botonSalir.on('pointerdown', (pointer) => {
-							console.log('Saliendo');
-							window.close();
-						});
+									   		});
 
-						//BOTON PUNTUACIONES
-						//Se añade el boton de puntuaciones
-						const botonPuntuacion = this.add.image(975, 760, "puntuaciones").setInteractive();
-						botonPuntuacion.setScale(0.06, 0.06)
+						               
+						               //BOTON CREDITOS
+						               //Se añade el boton de CREDITOS
+						               const botonCreditos = this.add.image(1010, 820, "creditos").setInteractive();
+						               botonCreditos.setScale(0.48, 0.48)
 
-						//Al pasar por encima se pone mas oscuro y crece en tamaño
-						botonPuntuacion.on('pointerover', function () {
-							this.setTint(0x555555);
-							this.setScale(0.08, 0.08);
-						});
+						               //Al pasar por encima se pone mas oscuro y crece en tamaño
+						               botonCreditos.on('pointerover', function () {
+						                   this.setTint(0x555555);
+						                   this.setScale(0.53, 0.53);
+						               });
 
-						//Al quitar el cursor el boton vuelve al tamaño original
-						botonPuntuacion.on('pointerout', function () {
-							this.clearTint();
-							this.setScale(0.06, 0.06);
-						});
+						               //Al quitar el cursor el boton vuelve al tamaño original
+						               botonCreditos.on('pointerout', function () {
+						                   this.clearTint();
+						                   this.setScale(0.48, 0.48);
+						               });
 
-						//Al hacer click en el boton se va a ajustes
-						botonPuntuacion.on('pointerdown', (pointer) => {
-							this.scene.sleep('MenuInicio');
-							this.scene.launch('Puntuaciones');
-							console.log('Pantalla de Puntuaciones');
+						               //Al hacer click en el boton se sale del juego
+						               botonCreditos.on('pointerdown', (pointer) => {
+						                   console.log('Creditos');
+						                   this.scene.start('Creditos');
+						               });
+									   
+									   //BOTON SALIR
+									   //Se añade el boton de salir
+								       const botonSalir = this.add.image(970, 1000, "salir").setInteractive();
+									   botonSalir.setScale(0.30, 0.30)
 
-						});
+									   //Al pasar por encima se pone mas oscuro y crece en tamaño
+									   botonSalir.on('pointerover', function () {
+									   		this.setTint(0x555555);
+									   		this.setScale(0.35, 0.35);
+									   	});
 
-					}
+									  //Al quitar el cursor el boton vuelve al tamaño original
+									   botonSalir.on('pointerout', function () {
+									   		this.clearTint();
+									   		this.setScale(0.30, 0.30);
+									   	});
+
+									   	//Al hacer click en el boton se sale del juego
+									   	botonSalir.on('pointerdown', (pointer) => {
+									   	    console.log('Saliendo');
+									   		window.close();
+									    });
+
+
+						           }
+
+					
 
 					update() {
 						nivelActual = 'MenuInicio';
@@ -3250,6 +3309,14 @@ setInterval(getMensajesChat, 3000);
 					}
 
 					preload() {
+						
+						this.load.image('fondoAjustes', 'assets/MenúAjuste.jpg');
+						                this.load.image('salir', 'assets/BotonSalir.png');
+						                this.load.image('volverJugar', 'CreditosImagenes/BotonVolverJugar.png');
+						                this.load.image('cuadradoVolumen', 'assets/Volumen.PNG');
+						                this.load.image('circulo', 'assets/Slider.PNG');
+						                this.load.image('barra', 'assets/BarraSonido.PNG');
+						                this.load.audio('cancion', 'Sonidos/Musica.wav')
 					}
 
 					create() {
@@ -3264,31 +3331,53 @@ setInterval(getMensajesChat, 3000);
 						barraVolumen.setScale(0.5, 0.5)
 
 						//BOTON SALIR
-						//Se añade el boton de salir
-						const botonSalir = this.add.image(975, 760, "salir").setInteractive();
-						botonSalir.setScale(0.20, 0.20)
+						                //Se añade el boton de salir
+						                const botonVolver = this.add.image(973, 840, "volverJugar").setInteractive();
+						                botonVolver.setScale(0.40, 0.40)
 
-						//Al pasar por encima se pone mas oscuro y crece en tamaño
-						botonSalir.on('pointerover', function () {
-							this.setTint(0x555555);
-							this.setScale(0.23, 0.23);
-						});
+						                //Al pasar por encima se pone mas oscuro y crece en tamaño
+						                botonVolver.on('pointerover', function () {
+						                    this.setTint(0x555555);
+						                    this.setScale(0.43, 0.43);
+						                });
 
-						//Al quitar el cursor el boton vuelve al tamaño original
-						botonSalir.on('pointerout', function () {
-							this.clearTint();
-							this.setScale(0.20, 0.20);
-						});
+						                //Al quitar el cursor el boton vuelve al tamaño original
+						                botonVolver.on('pointerout', function () {
+						                    this.clearTint();
+						                    this.setScale(0.40, 0.40);
+						                });
 
-						//Al hacer click en el boton se sale del juego
-						botonSalir.on('pointerdown', (pointer) => {
-							console.log('Saliendo de Ajustes');
-							this.scene.wake(nivelActual);
-							//chatActive = false;
-							document.getElementById('mensaje').blur();
-							//this.scene.resume(nivel);
-							this.scene.stop('Ajustes');
-						});
+						                //Al hacer click en el boton se sale del juego
+						                botonVolver.on('pointerdown', (pointer) => {
+						                    console.log('Saliendo de Ajustes');
+						                    this.scene.wake(nivelActual);
+						                    //this.scene.resume(nivel);
+						                    this.scene.stop('Ajustes');
+						                });
+
+						                const botonMenu = this.add.image(975, 730, "salir").setInteractive();
+						                botonMenu.setScale(0.20, 0.20)
+
+						                //Al pasar por encima se pone mas oscuro y crece en tamaño
+						                botonMenu.on('pointerover', function () {
+						                    this.setTint(0x555555);
+						                    this.setScale(0.23, 0.23);
+						                });
+
+						                //Al quitar el cursor el boton vuelve al tamaño original
+						                botonMenu.on('pointerout', function () {
+						                    this.clearTint();
+						                    this.setScale(0.20, 0.20);
+						                });
+
+						                //Al hacer click en el boton se sale del juego
+						                botonMenu.on('pointerdown', (pointer) => {
+						                    console.log('Saliendo de Ajustes');
+						                    this.scene.start('MenuInicio');
+						                    //this.scene.resume(nivel);
+						                    this.scene.stop('Ajustes');
+						                });
+
 
 						//CANCION
 

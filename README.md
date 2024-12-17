@@ -602,63 +602,6 @@ La anotación @SpringBootApplication marca esta clase como la clase de inicio de
 
 Se ha implementado un temporizador de 5 minutos de cuenta atrás el cual al llegar a 0 directamente lleva al final malo y al menú principal. Esto esta creado con Date que posteriormente se pasa a string. Este valor se llama cuando ya ha conseguido llegar a los finales. Debido a que javascript no permite que el cliente envie este se guarda en local con el método localStorage.setItem() y posteriormente en el index.html se hace el post para tenerlo para la comunicación cliente/servidor. Esto se guarda en un txt llamado puntuación que guarda al nombre del usuario con su puntuación.
 
-
-# Paso de mensajes
-
-Para que se pueda jugar distintos usuarios y que no sea localmente, se ha implementado un paso de mensajes con Node Js. En el cual se estará haciendo peticiones a un WebSocket handler. Por lo que permite una comunicación bidireccional en tiempo real entre el cliente y el servidor. Esto es esencial para los juegos de plataformas, donde las acciones de los jugadores y los eventos del juego deben reflejarse inmediatamente en la pantalla. Además de una baja latencia, siendo ligero y eficiente. Una vez establecida la conexión, los mensajes se envían rápidamente sin la sobrecarga de establecer una nueva conexión HTTP para cada interacción. Esto reduce la latencia, un factor crítico en los juegos en línea donde los retrasos pueden afectar negativamente la experiencia del usuario.
-A diferencia de las solicitudes HTTP tradicionales (que son stateless y requieren una nueva conexión para cada intercambio de datos), WebSockets mantienen una conexión persistente entre el cliente y el servidor. Esto permite una transferencia de datos más rápida y continua, ideal para la sincronización de estados en un juego en tiempo real. Con WebSockets, tanto el servidor como el cliente pueden enviar y recibir datos en cualquier momento. Esto es crucial para el juego interactivo, ya que permite que el servidor envíe actualizaciones de estado a los clientes (como movimientos de otros jugadores, cambios en el entorno, etc.) y que los clientes envíen comandos al servidor (como movimientos y acciones del jugador) sin necesidad de esperar una solicitud. Dado que los WebSockets mantienen una conexión abierta, no es necesario abrir y cerrar conexiones repetidamente, lo cual consume más recursos y tiempo. Esto resulta en una mayor eficiencia y menor carga en el servidor, lo que puede ser especialmente importante en juegos con muchos jugadores.
-
-Se ha decidido que el backend del juego sea implementado con Node.js, debido a su arquitectura basada en eventos y su capacidad para manejar un gran número de conexiones concurrentes de manera eficiente. La combinación de Node.js y WebSockets proporciona un juego robusto y escalable para desarrollar y mantener el juego en tiempo real.
-
-**¿Qué es Node.js?**
-
-Node.js es una plataforma de código abierto y multiplataforma que se utiliza para crear aplicaciones del lado del servidor. Está construido sobre el motor de JavaScript V8 de Google Chrome, lo que le permite ejecutar código JavaScript muy rápido.
-*Características Clave de Node.js*
-
-1. *Asíncrono y Basado en Eventos*
-Node.js utiliza un modelo de E/S sin bloqueo y basado en eventos. Esto significa que las operaciones de entrada/salida (como leer archivos de disco o hacer solicitudes de red) no bloquean la ejecución del programa, lo que permite manejar muchas conexiones concurrentes con alta eficiencia.
-3. *Motor V8 de Google*
-El motor V8 compila JavaScript a código de máquina nativo, proporcionando una ejecución rápida y eficiente del código.
-4. *Sistema de Paquetes NPM*
-Node.js incluye NPM (Node Package Manager), el cual es un ecosistema vasto y rico de bibliotecas y herramientas de terceros que facilitan el desarrollo de aplicaciones. Con NPM, los desarrolladores pueden compartir y reutilizar código fácilmente.
-5. *Aplicaciones en Tiempo Real*
-Node.js es ideal para aplicaciones en tiempo real, como chat en línea, juegos en línea y aplicaciones colaborativas, debido a su capacidad para manejar muchas conexiones simultáneas de manera eficiente.
-6. *Escalabilidad*
-Node.js es muy escalable debido a su naturaleza no bloqueante y la capacidad de manejar múltiples conexiones concurrentes con eficiencia. Se pueden crear aplicaciones que escalen horizontalmente añadiendo más instancias de servidor.
-
-Es por todo esto que se ha decidido usar Node.js para la implementación de WebSockets.
-
-**Implementación Node.js**
-
-Primero se ha creado una clase que se encarga de manejar las comunicaciones WebSocket en el juego, denominada WebSocketCCHandler.La clase WebSocketCCHandler extiende TextWebSocketHandler y se encarga de manejar las comunicaciones WebSocket en un juego de plataforma. Se implementa para gestionar múltiples estados y acciones de los jugadores.
-
-*Atributos*
-
-Banderas de estado: Para controlar el estado de los jugadores, pausas y finales del juego.
-  - boolean primero, segundo, pausa1, pausa2, p1ready, p2ready, seraphineFinal, cassidieFinal, finalBueno, finalMalo
-Controles Seraphina y Cassadie: Controlan las acciones de los jugadores.
-  - boolean up1, left1, right1, up2, left2, right2
-  - boolean a1, d1, w1, a2, d2, w2
-  - boolean salto1, salto2, sprint1, sprint2, h1, h2
-
-*Metodos*
-
-handleTextMessage(WebSocketSession session, TextMessage message):
-  Lee y parsea los mensajes JSON recibidos.
-  Utiliza un switch para manejar diferentes tipos de peticiones:
-    - Emparejamiento (emparejar): Asigna roles a los jugadores.
-    - Control de Pausas (parar, pausa, continuar): Gestiona el estado de pausa.
-    - Control de Juegos (play, playerReady, checkPlayersReady, reiniciarPersonajes): Verifica el estado de preparación de los jugadores y reinicia personajes.
-    - Finales (playerPuertas, getFinal, comprobarExisteFinal, finalBueno, finalMalo, tipoFinal): Gestiona el estado de los finales del juego.
-    - Controles de Movimiento (pulsarJugadorLeft, soltarJugadorLeft, pulsarJugadorRight, soltarJugadorRight, pulsarJugadorUp, soltarJugadorUp, pulsarJugadorA, soltarJugadorA, pulsarJugadorD, soltarJugadorD,                 pulsarJugadorW, soltarJugadorW, pulsarJugadorSalto, soltarJugadorSalto, pulsarJugadorSprint, soltarJugadorSprint, pulsarJugadorH, soltarJugadorH): Gestiona los movimientos de los personajes de acuerdo a las         acciones de los jugadores.
-
-Una vez ya se ha creado pel WebSocketCCHandler para la gestión de comunicaciones en tiempo real entre jugadores y el servidor, se implementa las llamadas y los valores text que puede recibir del WebSocketccHandler en el index.html. De forma que si necesita hacer alguna petición de mensajes, este se crea una variable que indique el nombre de la petición del WebSocket y la envie através de herramientas que proporciona el Node.js. Además en el index, se tiene un método especial que es para recibir los diversos mensajes que puede enviar el websocket, de forma que por cada case hace algo distinto.
-
-## Diagrama UML
-A continuación se muestra un diagrama de clases que contiene toda la información previa del proyecto, así como las nuevas clases que han sido necesarias incluir para implementar las características de comunicación asíncrona.
-![](CONCEPTS/FINALES/UML1.jpg)
-![](CONCEPTS/FINALES/UML2.jpg)
-
 ## Instrucciones
 
 Los pasos para jugar son los siguientes:
@@ -684,11 +627,8 @@ Una vez que la aplicación se esté ejecutando, si está configurada para escuch
 - Puedes iniciar sesión para jugar o no:
 Al iniciar sesión nos permite guardar tu ranking con el tiempo y obtenerlo en una tabla de puntuaciones.
 
-- Escoger personaje:
-El personaje seleccionado será en función del orden de llegada en el emparejamiento, el primero sera Cassidie y el segundo Seraphina.
-
-- Al cargar sale una pantalla con instrucciones de como moverse/interactuar de cada personaje:
-Cada personaje se mueve únicamente para poder hacer la distinción más clara. En cuanto a los finales, solo uno de los usuarios podra elegirlo.
+- Puedes ver los controles de cada personaje en el tutorial.
+- En cuanto a los finales, solo uno de los usuarios podra elegirlo.
 Una vez acabada la partida se puede rejugar.
 
 - En resumen, para jugar:
@@ -697,18 +637,8 @@ Compila el proyecto con Maven.
 Ejecuta el archivo JAR generado.
 Accede a la aplicación a través del navegador web con la URL proporcionada por la aplicación o usando http://localhost:puerto si no se ha configurado otro 
 Puede iniciar sesión o no para jugar.
-El personaje es elegido automaticamente.
 El personaje que primero llegue al final gana.
 Se puede pausar el juego en cualquier momento.
-Una vez acabe el juego se puede volver a jugar, se mantendran los personajes.
-
-## Mejoras realizadas
-
-Las mejoras realizadas se han implementado dentro del juego base, ya que es el juego que va a ser publicado, excepto el temporizador que ha sido implementado dentro de todas las fases, aunque con ligeros cambios para realizar la implementación de las puntuaciones.
-- Se ha añadido dentro del tutorial una imagen indicativa para enseñar al jugador como pasar los diálogos, además de añadir dentro de la introducción un nuevo fondo donde se muestra como pasar a la siguiente pantalla.
-- Además, también se ha hecho una mejora dentro del menú de inicio pudiendo acceder a los créditos dentro de este.
-- Por otro lado, dentro del menú de ajustes, cuando se está dentro de la partida se permite volver la menú de inicio.
-- Por último se ha añadido una cuenta atrás de 5 minutos, si la cuenta atrás llega a su fin y aún no se ha finalizado el juego este lleva automaticamente a los jugadores al final malo, en cambio si logran finalizar el juego entonces, dentro de las fases 3 y 4 se usa el tiempo que se ha utilizado para las puntuaciones, se puede mencionar que las puntuaciones no están implementadas dentro del juego base debido a que van según el jugador que haya inciado sesión.
 
 ## Diagrama de clases actualizado
 

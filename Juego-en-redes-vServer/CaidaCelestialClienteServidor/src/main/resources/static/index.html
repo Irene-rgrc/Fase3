@@ -3132,6 +3132,7 @@ setInterval(getMensajesChat, 3000);
 						this.load.spritesheet('puerta', 'assets/PuertaCielo.png', {frameWidth: 1920, frameHeight: 1080})
 						this.load.image('sueloCielo', 'assets/PlataformaMoradaLado.png');
 						this.load.image('puntuaciones', 'assets/PuntuacionesBoton.png');
+						this.load.image('puntuacionesFinal', 'assets/BotonPuntuacionesFinal.png');
 						this.load.image('FondoPunt', 'assetsUsuarios/FondoPuntuaciones.png');
 					}
 
@@ -3216,30 +3217,8 @@ setInterval(getMensajesChat, 3000);
 						                   console.log('Pantalla ajustes');
 
 						               });
-									   const botonPuntuacion = this.add.image(975, 680, "puntuaciones").setInteractive();
-									   botonPuntuacion.setScale(0.085, 0.085)
 
-									   //Al pasar por encima se pone mas oscuro y crece en tamaño
-									   botonPuntuacion.on('pointerover', function () {
-									   		this.setTint(0x555555);
-									   		this.setScale(0.11, 0.11);
-									   		});
 
-									   	//Al quitar el cursor el boton vuelve al tamaño original
-									   	botonPuntuacion.on('pointerout', function () {
-									   		this.clearTint();
-									   		this.setScale(0.085, 0.085);
-									   		});
-
-									   	//Al hacer click en el boton se va a ajustes
-									   	botonPuntuacion.on('pointerdown', (pointer) => {
-									   		this.scene.sleep('MenuInicio');
-									   		this.scene.launch('Puntuaciones');
-									   		console.log('Pantalla de Puntuaciones');
-
-									   		});
-
-						               
 						               //BOTON CREDITOS
 						               //Se añade el boton de CREDITOS
 						               const botonCreditos = this.add.image(1010, 820, "creditos").setInteractive();
@@ -3262,6 +3241,29 @@ setInterval(getMensajesChat, 3000);
 						                   console.log('Creditos');
 						                   this.scene.start('Creditos');
 						               });
+						               
+						               const botonPuntuacion = this.add.image(975, 680, "puntuacionesFinal").setInteractive();
+									   botonPuntuacion.setScale(0.65, 0.65)
+
+									   //Al pasar por encima se pone mas oscuro y crece en tamaño
+									   botonPuntuacion.on('pointerover', function () {
+									   		this.setTint(0x555555);
+									   		this.setScale(0.75, 0.75);
+									   		});
+									   		
+									   //Al quitar el cursor el boton vuelve al tamaño original
+									   	botonPuntuacion.on('pointerout', function () {
+									   		this.clearTint();
+									   		this.setScale(0.65, 0.65);
+									   		});
+
+									   	//Al hacer click en el boton se va a ajustes
+									   	botonPuntuacion.on('pointerdown', (pointer) => {
+									   		this.scene.sleep('MenuInicio');
+									   		this.scene.launch('Puntuaciones');
+									   		console.log('Pantalla de Puntuaciones');
+
+									   		});
 									   
 									   //BOTON SALIR
 									   //Se añade el boton de salir

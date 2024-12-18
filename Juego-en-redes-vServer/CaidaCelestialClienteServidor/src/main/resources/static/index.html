@@ -2915,7 +2915,8 @@ setInterval(getMensajesChat, 3000);
 				    }
 
 				    preload() {
-				        this.load.image('fondoCreditos', 'CreditosImagenes/Creditos2.png'); // Clave única para créditos
+				        //this.load.image('fondoCreditos', 'CreditosImagenes/Creditos2.png'); // Clave única para créditos
+				        this.load.image('CreditosFinal', 'assets/ImagenCreditosFinal.PNG');
 				    }
 
 				    create() {
@@ -2923,7 +2924,7 @@ setInterval(getMensajesChat, 3000);
 				        this.textures.remove('fondoTutorial');
 				        this.textures.remove('fondoMenuInicio');
 
-				        const fondo = this.add.image(960, 540, 'fondoCreditos');
+				        const fondo = this.add.image(960, 540, 'CreditosFinal');
 				        fondo.setDisplaySize(1920, 1080);
 
 				        // Ejemplo de botón de regreso

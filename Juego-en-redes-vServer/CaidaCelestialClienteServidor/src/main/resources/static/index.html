@@ -980,7 +980,7 @@
 					document.getElementById("procesando").style.display = "block";
 					setTimeout(function () {
 					document.getElementById("procesando").style.display = "none";}, 3000);
-					getUserByUsername(username, function (user) {
+					getUserByUsidentificacionme(username, function (identificacion) {
 						if (identificacion) {
 							if (tiempoTranscurrido < user.record) {
 								guardarPuntuacion(tiempoTranscurrido, identificacion);

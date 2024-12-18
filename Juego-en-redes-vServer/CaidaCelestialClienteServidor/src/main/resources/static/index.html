@@ -508,6 +508,17 @@
 		style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255,0,0,0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000;">
 		Datos de Inicio de sesión incorrectos
 	</div>
+	
+	<div id="errorServidor"
+			style="display: none; position: fixed; top: 50px; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255,0,0,0.5); color: white; padding: 20px; border-radius: 10px; z-index: 1000;">
+			Se ha perdido la conexión con el servidor
+		</div>
+		
+		<div id="procesando"
+					style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255,0,0,0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000;">
+					Procesando datos
+				</div>
+				
 	<p id="tiempo" style="position: absolute; top: 10px; left: 10px; padding: 10px; background-color: LavenderBlush;">
 	</p>
 	<div class="principal-popup" id="principalForm">
@@ -589,8 +600,8 @@
 				<br><br>
 				<button type="button" class="btn registrarse" id='registrarse-button'> </button>
 				<br><br>
-				<button type="button" class="btn login" onclick="openInicio()"> </button>
-				<br><br>
+				<!--<button type="button" class="btn login" onclick="openInicio()"> </button>
+				<br><br> -->
 				<button type="button" class="btn cancelar" onclick="closeForm()"> </button>
 			</form>
 		</div>
@@ -824,6 +835,10 @@
 						password: password
 					};
 
+					document.getElementById("procesando").style.display = "block";
+					setTimeout(function () {
+					document.getElementById("procesando").style.display = "none";}, 3000);
+											
 					getUserByUsername(name, function (identificacion) {
 						if (!identificacion) {
 							createUser(usuario, function (usuarioConId) {
@@ -864,6 +879,9 @@
 					var name = $('#userA').val();
 					var password = $('#passwordA').val();
 
+					document.getElementById("procesando").style.display = "block";
+					setTimeout(function () {
+					document.getElementById("procesando").style.display = "none";}, 3000);
 					getUserByUsername(name, function (identificacion) {
 						if (identificacion) {
 							logUser(identificacion, password, function (usuarioLoggeado) {
@@ -920,7 +938,9 @@
 
 				$('#cambiar-button').click(function () {
 					var password = $('#nPasswordC').val();
-
+					document.getElementById("procesando").style.display = "block";
+					setTimeout(function () {
+					document.getElementById("procesando").style.display = "none";}, 3000);
 					getUserByUsername($('#userA').val(), function (identificacion) {
 						if (identificacion) {
 							currentUser.id = identificacion;
@@ -957,7 +977,9 @@
 
 				function partidaCompleta(tiempoTranscurrido) {
 					var username = $('#userA').val();
-
+					document.getElementById("procesando").style.display = "block";
+					setTimeout(function () {
+					document.getElementById("procesando").style.display = "none";}, 3000);
 					getUserByUsername(username, function (user) {
 						if (identificacion) {
 							if (tiempoTranscurrido < user.record) {
@@ -1045,6 +1067,7 @@ function mensajeChat(message) {
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error('Error al enviar el mensaje:', textStatus, errorThrown, currentUser.id);
+			
         }
     });
 }
@@ -1084,6 +1107,8 @@ function getMensajesChat() {
             ventanaChat.scrollTop = ventanaChat.scrollHeight; // Hacer scroll hacia abajo para ver los últimos mensajes
         },
         error: function(jqXHR, textStatus, errorThrown) {
+			document.getElementById("errorServidor").style.display = "block";
+										
             console.error('Error al obtener los mensajes:', textStatus, errorThrown);
         }
     });
@@ -3190,6 +3215,7 @@ setInterval(getMensajesChat, 3000);
 						               //Al hacer click en el boton comienza el juego
 						               botonJugar.on('pointerdown', (pointer) => {
 						                   console.log('Comenzando Juego');
+										  
 						                   this.scene.start('Tutorial');
 						               });
 
@@ -3333,6 +3359,7 @@ setInterval(getMensajesChat, 3000);
 						barraVolumen.setScale(0.5, 0.5)
 
 						//BOTON SALIR
+						if(nivelActual!='MenuInicio'){
 						                //Se añade el boton de salir
 						                const botonVolver = this.add.image(973, 840, "volverJugar").setInteractive();
 						                botonVolver.setScale(0.40, 0.40)
@@ -3352,10 +3379,12 @@ setInterval(getMensajesChat, 3000);
 						                //Al hacer click en el boton se sale del juego
 						                botonVolver.on('pointerdown', (pointer) => {
 						                    console.log('Saliendo de Ajustes');
+		
 						                    this.scene.wake(nivelActual);
 						                    //this.scene.resume(nivel);
 						                    this.scene.stop('Ajustes');
 						                });
+										}
 
 						                const botonMenu = this.add.image(975, 730, "salir").setInteractive();
 						                botonMenu.setScale(0.20, 0.20)
@@ -3375,7 +3404,12 @@ setInterval(getMensajesChat, 3000);
 						                //Al hacer click en el boton se sale del juego
 						                botonMenu.on('pointerdown', (pointer) => {
 						                    console.log('Saliendo de Ajustes');
-						                    this.scene.start('MenuInicio');
+											if(nivelActual=='MenuInicio'){
+												this.scene.wake('MenuInicio');
+											}
+						                   else{
+											this.scene.start('MenuInicio');
+										   }
 						                    //this.scene.resume(nivel);
 						                    this.scene.stop('Ajustes');
 						                });

@@ -2765,9 +2765,13 @@ setInterval(getMensajesChat, 3000);
 						image13.setPosition(this.sys.game.config.width / 2, this.sys.game.config.height / 2);
 						image13.setVisible(false);
 
-						const image14 = this.add.image(950, 440, 'Imagen14').setDisplaySize(1920, 1080);
+						const image14 = this.add.image(950, 440, 'ImagenEnter').setDisplaySize(1920, 1080);
 						image14.setPosition(this.sys.game.config.width / 2, this.sys.game.config.height / 2);
 						image14.setVisible(false);
+						
+						const image15 = this.add.image(950, 440, 'Imagen14').setDisplaySize(1920, 1080);
+						image15.setPosition(this.sys.game.config.width / 2, this.sys.game.config.height / 2);
+						image15.setVisible(false);
 
 						//BOTON SIGUIENTE
 						//Se añade el boton para pasar de imagenes
@@ -3059,10 +3063,10 @@ setInterval(getMensajesChat, 3000);
 					}
 
 					create() {
-						this.add.image(960, 500, 'sky');
+						this.add.image(960, 500, 'textoIntro');
 						this.enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-						this.add.text(40, 50, 'Tras años de torturas por parte del dios del mal,\nCassadie por fin se encontraría con Seraphina. \nOtro ángel caído abandonado en el subsuelo... Quizá tenían más en común de lo que parecía. \nY quizá no, quizás eso sería incluso mejor... \n\nQuizá podía ser su billete de vuelta.',
-							{fontFamily: 'serif', fontSize: '50px', color: '#000'});
+						//this.add.text(40, 50, 'Tras años de torturas por parte del dios del mal,\nCassadie por fin se encontraría con Seraphina. \nOtro ángel caído abandonado en el subsuelo... Quizá tenían más en común de lo que parecía. \nY quizá no, quizás eso sería incluso mejor... \n\nQuizá podía ser su billete de vuelta.',
+							//{fontFamily: 'serif', fontSize: '50px', color: '#000'});
 					}
 
 					update() {
@@ -3116,6 +3120,7 @@ setInterval(getMensajesChat, 3000);
 						this.load.spritesheet('puerta', 'assets/PuertaCielo.png', {frameWidth: 960, frameHeight: 540})
 						this.load.spritesheet('nubesObstaculo', 'assets/nubesObstaculo.png', {frameWidth: 311, frameHeight: 109});
 						this.load.image('sky', 'assets/Cielo.jpg');
+						this.load.image('textoIntro', 'assets/ImagenHistoriaIntro.PNG');
 						this.load.image('fondoTutorialI', 'assets/FondoTutorial.png');
 						this.load.image('BotonSiguiente', 'assets/BotonSiguiente.png');
 						this.load.image('Imagen1', 'ImagenesTutorial/Imagen1.png');
@@ -3132,6 +3137,7 @@ setInterval(getMensajesChat, 3000);
 						this.load.image('Imagen12', 'ImagenesTutorial/Imagen12.png');
 						this.load.image('Imagen13', 'ImagenesTutorial/Imagen13.png');
 						this.load.image('Imagen14', 'ImagenesTutorial/Imagen14.png');
+						this.load.image('ImagenEnter', 'ImagenesTutorial/ImagenTutorialEnter.PNG');
 						this.load.image('GraciasPorJugar', 'CreditosImagenes/GraciasPorJugar.png');
 						this.load.image('IrCreditos', 'CreditosImagenes/BotonCreditos.PNG');
 						this.load.image('Imagen15', 'CreditosImagenes/Creditos2.png');

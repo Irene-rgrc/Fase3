@@ -62,6 +62,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.caidacelestial.CaidaCelestialClienteServidorApplication</mainClass>
+					<layout>ZIP</layout>
+				</configuration>
                 <version>2.3.0.RELEASE</version>
 			</plugin>
 		</plugins>

@@ -66,10 +66,10 @@ public class UsersController {
     }
     
     @PutMapping("/record/{id}")
-    public ResponseEntity<User> actualizaRecord(@PathVariable long id, @RequestParam long record) throws IOException {
+    public ResponseEntity<User> actualizaRecord(@PathVariable long id, @RequestBody User userActualizado) throws IOException {
         User savedUser = users.get(id);
         if (savedUser != null) {
-            savedUser.setRecord(record); 
+            savedUser.setRecord(userActualizado.getRecord()); 
             guardarUsuarios();
             return new ResponseEntity<>(savedUser, HttpStatus.OK);
         } else {

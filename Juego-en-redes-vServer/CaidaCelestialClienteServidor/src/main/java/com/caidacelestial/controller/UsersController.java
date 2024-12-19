@@ -138,6 +138,7 @@ public class UsersController {
         return mensaje;
     }
 
+    
     // Endpoint para obtener todos los mensajes del chat
     @GetMapping("/obtener-mensajes")
     public List<Message> obtenerMensajes() throws ClassNotFoundException, IOException {
